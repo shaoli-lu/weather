@@ -104,38 +104,40 @@ export default function Home() {
 
   return (
     <main className="main-container">
-      <header className="relative w-full mb-16 min-h-[50px] flex flex-col items-center md:flex-row md:justify-center">
-        {/* BRANDING: Responsive placement */}
-        <div className="flex flex-col items-center md:items-start md:absolute md:top-0 md:left-0 animate-fade-in mb-8 md:mb-0">
+      <header className="w-full mb-16 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 items-center md:items-start">
+        {/* BRANDING: Left */}
+        <div className="flex flex-col items-center md:items-start animate-fade-in order-1">
           <h1 className="text-2xl font-black tracking-tighter text-white leading-none">
             Sun<span className="text-accent">Rise</span>
           </h1>
           <p className="hidden md:block text-[9px] text-muted font-bold tracking-widest uppercase mt-1 opacity-60 italic">Appreciate the beauty of every horizon</p>
         </div>
 
-        {/* LIVE CLOCK: Centerpiece */}
-        <div className="md:absolute md:top-0 md:left-1/2 md:-translate-x-1/2 z-10 scale-90 md:scale-100">
+        {/* LIVE CLOCK: Center */}
+        <div className="flex flex-col items-center z-10 scale-90 md:scale-100 order-2">
           <LiveClock />
         </div>
 
-        {/* SEARCHBOX: Consistent Top Right via CSS */}
-        <div className="search-container mt-8 md:mt-0">
-          <div className="search-wrapper">
-            <div className="search-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
+        {/* SEARCHBOX: Right */}
+        <div className="flex flex-col items-center md:items-end z-10 order-3">
+          <div className="search-container w-full max-w-[300px]">
+            <div className="search-wrapper">
+              <div className="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
+              </div>
+              <input
+                type="text"
+                placeholder="Search..."
+                className="glass-input"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
-            <input
-              type="text"
-              placeholder="Search..."
-              className="glass-input"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
           </div>
         </div>
       </header>
 
-      <nav className="tab-container">
+      <nav className="tab-container mt-20">
         {[
           { id: 'slideshow', label: 'Slideshow' },
           { id: 'cities', label: 'Cities' },

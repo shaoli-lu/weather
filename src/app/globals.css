@@ -106,15 +106,11 @@ body {
 .header-search {
   position: relative;
   width: 100%;
-  min-height: 50px;
 }
 
 .search-container {
-  position: absolute;
-  top: 0;
-  right: 0;
+  position: relative;
   z-index: 100;
-  margin-bottom: 0;
 }
 
 @media (max-width: 799px) {
