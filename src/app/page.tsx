@@ -9,8 +9,10 @@ import CityList from '@/components/CityList';
 
 const LiveClock = () => {
   const [time, setTime] = useState(new Date());
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // Update every second for precision
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
@@ -22,10 +24,12 @@ const LiveClock = () => {
     return { timeStr, period };
   };
 
+  if (!mounted) return <div className="min-h-[60px]"></div>;
+
   const { timeStr, period } = formatParts();
 
   return (
-    <div className="flex flex-col items-center animate-fade-in pointer-events-none">
+    <div className="flex flex-col items-center animate-fade-in pointer-events-none pb-8">
       <div className="flex items-center gap-3">
         <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_var(--accent-glow)]"></div>
         <div className="flex items-baseline gap-2">
@@ -38,7 +42,7 @@ const LiveClock = () => {
         </div>
       </div>
       <span className="text-[10px] md:text-[11px] font-bold text-muted uppercase tracking-[0.4em] opacity-70 mt-1">
-        {time.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}
+        {time.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
       </span>
     </div>
   );
