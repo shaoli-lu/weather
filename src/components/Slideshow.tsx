@@ -35,7 +35,9 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
     );
   }
 
-  const currentCity = data[currentIndex];
+  // Safety check: ensure index is in bounds even during rapid data changes (search)
+  const safeIndex = currentIndex >= data.length ? 0 : currentIndex;
+  const currentCity = data[safeIndex];
 
   return (
     <div
