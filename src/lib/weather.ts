@@ -64,10 +64,13 @@ export const fetchWeather = async (city: string): Promise<WeatherData> => {
     const sunrise = astro?.sunrise || "N/A";
     const sunset = astro?.sunset || "N/A";
     
+    const countryString = data.location.country;
+    const country = countryString === "United States of America" ? "" : countryString;
+    
     return {
       city: data.location.name,
       queryCity: city,
-      country: data.location.country,
+      country,
       temp_c,
       temp_f,
       condition: data.current.condition.text,

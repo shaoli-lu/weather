@@ -73,10 +73,12 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
 
             {/* Location & City */}
             <div className="flex flex-col items-center text-center w-full">
-              <span className="text-accent/70 font-bold tracking-[0.5em] uppercase text-[10px] mb-4">
-                Now in {currentCity.country}
-              </span>
-              <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white leading-none mb-6">
+              {currentCity.country && (
+                <span className="text-accent/70 font-bold tracking-[0.5em] uppercase text-[10px] mb-4">
+                  Now in {currentCity.country}
+                </span>
+              )}
+              <h2 className={`font-black tracking-tighter text-white leading-none mb-6 ${currentCity.country ? 'text-5xl md:text-8xl' : 'text-6xl md:text-9xl mt-4'}`}>
                 {currentCity.city}
               </h2>
 
