@@ -7,6 +7,43 @@ import { fetchWeather, WeatherData } from '@/lib/weather';
 import Slideshow from '@/components/Slideshow';
 import CityList from '@/components/CityList';
 
+const LiveClock = () => {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    // Update every second for precision
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatParts = () => {
+    const hhmmss = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+    const [timeStr, period] = hhmmss.split(' ');
+    return { timeStr, period };
+  };
+
+  const { timeStr, period } = formatParts();
+
+  return (
+    <div className="flex flex-col items-center animate-fade-in pointer-events-none">
+      <div className="flex items-center gap-3">
+        <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_var(--accent-glow)]"></div>
+        <div className="flex items-baseline gap-2">
+          <span className="text-2xl md:text-3xl font-black text-white tracking-tighter tabular-nums drop-shadow-sm">
+            {timeStr}
+          </span>
+          <span className="text-xs md:text-sm font-black text-white/40 uppercase">
+            {period}
+          </span>
+        </div>
+      </div>
+      <span className="text-[10px] md:text-[11px] font-bold text-muted uppercase tracking-[0.4em] opacity-70 mt-1">
+        {time.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}
+      </span>
+    </div>
+  );
+};
+
 export default function Home() {
   const [data, setData] = useState<WeatherData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -63,17 +100,22 @@ export default function Home() {
 
   return (
     <main className="main-container">
-      <header className="relative w-full mb-12 min-h-[50px]">
+      <header className="relative w-full mb-16 min-h-[50px] flex flex-col items-center md:flex-row md:justify-center">
         {/* BRANDING: Responsive placement */}
-        <div className="flex flex-col items-center md:items-start md:absolute md:top-0 md:left-0 animate-fade-in">
+        <div className="flex flex-col items-center md:items-start md:absolute md:top-0 md:left-0 animate-fade-in mb-8 md:mb-0">
           <h1 className="text-2xl font-black tracking-tighter text-white leading-none">
             Sun<span className="text-accent">Rise</span>
           </h1>
-          <p className="hidden md:block text-[9px] text-muted font-bold tracking-widest uppercase mt-1 opacity-60">Appreciate the beauty of every horizon</p>
+          <p className="hidden md:block text-[9px] text-muted font-bold tracking-widest uppercase mt-1 opacity-60 italic">Appreciate the beauty of every horizon</p>
+        </div>
+
+        {/* LIVE CLOCK: Centerpiece */}
+        <div className="md:absolute md:top-0 md:left-1/2 md:-translate-x-1/2 z-10 scale-90 md:scale-100">
+          <LiveClock />
         </div>
 
         {/* SEARCHBOX: Consistent Top Right via CSS */}
-        <div className="search-container">
+        <div className="search-container mt-8 md:mt-0">
           <div className="search-wrapper">
             <div className="search-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
