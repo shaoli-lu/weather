@@ -1,5 +1,5 @@
 import React from 'react';
-import { WeatherData } from '@/lib/weather';
+import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription } from '@/lib/weather';
 
 interface CityListProps {
   data: WeatherData[];
@@ -26,14 +26,14 @@ export default function CityList({ data, type }: CityListProps) {
           <div className="flex justify-between items-center px-1">
             <div className="flex items-center gap-2">
               <div className="flex flex-col">
-                <span className="text-[9px] font-bold text-muted uppercase tracking-tight">{city.sunrise}</span>
-                <span className="text-[8px] font-bold text-accent uppercase">Watch {city.sunriseAction}</span>
+                <span className="text-[9px] font-bold text-muted uppercase tracking-tight">Sunrise: {city.sunrise}</span>
+                <span className="text-[8px] font-bold text-accent uppercase">Watch: {city.sunriseAction}</span>
               </div>
             </div>
             <div className="flex items-center gap-2 text-right">
               <div className="flex flex-col">
-                <span className="text-[9px] font-bold text-muted uppercase tracking-tight">{city.sunset}</span>
-                <span className="text-[8px] font-bold text-accent uppercase">Watch {city.sunsetAction}</span>
+                <span className="text-[9px] font-bold text-muted uppercase tracking-tight">Sunset: {city.sunset}</span>
+                <span className="text-[8px] font-bold text-accent uppercase">Watch: {city.sunsetAction}</span>
               </div>
             </div>
           </div>
@@ -42,7 +42,7 @@ export default function CityList({ data, type }: CityListProps) {
           <div className="flex justify-between items-start">
             <div className="flex flex-col">
               <span className="text-[10px] text-accent/60 font-bold tracking-widest uppercase mb-1">{city.country}</span>
-              <h3 className="text-2xl font-bold text-white tracking-tight leading-tight">
+              <h3 className="text-2xl font-bold text-[#ff3333] tracking-tight leading-tight">
                 {city.city}
               </h3>
             </div>
@@ -56,13 +56,39 @@ export default function CityList({ data, type }: CityListProps) {
             </div>
           </div>
 
-          {/* FOOTER: Condition */}
+          {/* WEATHER DETAILS GRID */}
+          <div className="grid grid-cols-2 gap-y-3 gap-x-2 py-4 border-t border-b border-white/5 my-2">
+            <div className="flex flex-col">
+              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">UV Index: </span>
+              <span className="text-[10px] font-bold text-[#ff3333] text-left">{city.uv} ({getUVDescription(city.uv)})</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">Humidity: </span>
+              <span className="text-[10px] font-bold text-[#ff3333] text-left">{city.humidity}%</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">Pressure: </span>
+              <span className="text-[10px] font-bold text-[#ff3333] text-left">{city.pressure_mb} mb ({getPressureDescription(city.pressure_mb)})</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">Visibility: </span>
+              <span className="text-[10px] font-bold text-[#ff3333] text-left">{city.vis_km} km ({getVisibilityDescription(city.vis_km)})</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">AQI (EPA): </span>
+              <span className="text-[10px] font-bold text-[#ff3333] text-left">{city.aqi} ({getAQIDescription(city.aqi)})</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">Daylight: </span>
+              <span className="text-[10px] font-bold text-[#ff3333] text-left">{city.sun_hours}</span>
+            </div>
+          </div>
           <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
             <div className="flex items-center gap-3">
               <img src={city.icon} alt={city.condition} className="w-6 h-6 object-contain" />
               <span className="text-[11px] font-semibold text-white/70 uppercase tracking-widest">{city.condition}</span>
             </div>
-            <span className="text-[10px] text-muted font-medium italic">{city.moon_phase}</span>
+            <span className="text-[10px] text-muted font-medium italic">Moon Phase: <span className="text-[#ff3333]">{city.moon_phase}</span></span>
           </div>
         </div>
       ))}

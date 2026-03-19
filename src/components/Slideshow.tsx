@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { WeatherData } from '@/lib/weather';
+import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription } from '@/lib/weather';
 
 export default function Slideshow({ data }: { data: WeatherData[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -54,15 +54,15 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
           <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-20 text-center">
             <div className="flex flex-col items-center justify-center">
               <div className="flex flex-col items-center">
-                <span className="text-[10px] font-bold text-muted uppercase tracking-widest leading-relaxed">Sunrise {currentCity.sunrise}</span>
-                <span className="text-[11px] font-extrabold text-accent uppercase tracking-[0.2em]">Watch at {currentCity.sunriseAction}</span>
+                <span className="text-[10px] font-bold text-muted uppercase tracking-widest leading-relaxed">Sunrise: {currentCity.sunrise}</span>
+                <span className="text-[11px] font-extrabold text-accent uppercase tracking-[0.2em]">Watch at: {currentCity.sunriseAction}</span>
               </div>
             </div>
-
+          
             <div className="flex flex-col items-center justify-center">
               <div className="flex flex-col items-center">
-                <span className="text-[10px] font-bold text-muted uppercase tracking-widest leading-relaxed">Sunset {currentCity.sunset}</span>
-                <span className="text-[11px] font-extrabold text-accent uppercase tracking-[0.2em]">Watch at {currentCity.sunsetAction}</span>
+                <span className="text-[10px] font-bold text-muted uppercase tracking-widest leading-relaxed">Sunset: {currentCity.sunset}</span>
+                <span className="text-[11px] font-extrabold text-accent uppercase tracking-[0.2em]">Watch at: {currentCity.sunsetAction}</span>
               </div>
             </div>
           </div>
@@ -78,7 +78,7 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
                   Now in {currentCity.country}
                 </span>
               )}
-              <h2 className={`font-black tracking-tighter text-white leading-none mb-6 ${currentCity.country ? 'text-5xl md:text-8xl' : 'text-6xl md:text-9xl mt-4'}`}>
+              <h2 className={`font-black tracking-tighter text-[#ff3333] leading-none mb-6 ${currentCity.country ? 'text-5xl md:text-8xl' : 'text-6xl md:text-9xl mt-4'}`}>
                 {currentCity.city}
               </h2>
 
@@ -104,10 +104,37 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
               </div>
 
               <div className="w-20 h-[1.5px] bg-accent/20 my-8"></div>
+                           {/* SLIDESHOW WEATHER DETAILS GRID */}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-8 md:gap-x-12 py-8 border-t border-b border-white/5 my-8 w-full max-w-2xl mx-auto">
+                <div className="flex flex-col items-center">
+                  <span className="text-[9px] md:text-[10px] text-muted font-black uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-60 mb-2">UV Index: </span>
+                  <span className="text-lg md:text-xl font-bold text-[#ff3333]">{currentCity.uv} ({getUVDescription(currentCity.uv)})</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-[9px] md:text-[10px] text-muted font-black uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-60 mb-2">Humidity: </span>
+                  <span className="text-lg md:text-xl font-bold text-[#ff3333]">{currentCity.humidity}%</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-[9px] md:text-[10px] text-muted font-black uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-60 mb-2">Pressure: </span>
+                  <span className="text-lg md:text-xl font-bold text-[#ff3333]">{currentCity.pressure_mb} mb ({getPressureDescription(currentCity.pressure_mb)})</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-[9px] md:text-[10px] text-muted font-black uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-60 mb-2">Visibility: </span>
+                  <span className="text-lg md:text-xl font-bold text-[#ff3333]">{currentCity.vis_km} km ({getVisibilityDescription(currentCity.vis_km)})</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-[9px] md:text-[10px] text-muted font-black uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-60 mb-2">AQI (EPA): </span>
+                  <span className="text-lg md:text-xl font-bold text-[#ff3333]">{currentCity.aqi} ({getAQIDescription(currentCity.aqi)})</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-[9px] md:text-[10px] text-muted font-black uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-60 mb-2">Daylight: </span>
+                  <span className="text-lg md:text-xl font-bold text-[#ff3333]">{currentCity.sun_hours}</span>
+                </div>
+              </div>
 
               <div className="flex flex-col items-center">
                 <span className="text-[11px] font-black text-muted uppercase tracking-[0.5em]">
-                  {currentCity.moon_phase}
+                  Moon Phase: <span className="text-[#ff3333]">{currentCity.moon_phase}</span>
                 </span>
               </div>
             </div>

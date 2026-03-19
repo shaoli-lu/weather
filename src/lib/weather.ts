@@ -11,6 +11,12 @@ export interface WeatherData {
   sunriseAction: string;
   sunsetAction: string;
   moon_phase: string;
+  uv: number;
+  humidity: number;
+  pressure_mb: number;
+  vis_km: number;
+  aqi: number;
+  sun_hours: string;
 }
 
 const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY || "";
@@ -40,6 +46,54 @@ const subtract30Minutes = (timeStr: string): string => {
   }
 };
 
+const calculateSunHours = (sunrise: string, sunset: string): string => {
+  if (!sunrise || !sunset || sunrise === "N/A" || sunset === "N/A") return "N/A";
+  try {
+    const parseTime = (timeStr: string) => {
+      const [time, period] = timeStr.split(" ");
+      let [hours, minutes] = time.split(":").map(Number);
+      if (period === "PM" && hours !== 12) hours += 12;
+      if (period === "AM" && hours === 12) hours = 0;
+      return hours * 60 + minutes;
+    };
+
+    const sunriseMins = parseTime(sunrise);
+    const sunsetMins = parseTime(sunset);
+    let diffMins = sunsetMins - sunriseMins;
+    if (diffMins < 0) diffMins += 24 * 60;
+
+    const h = Math.floor(diffMins / 60);
+    const m = diffMins % 60;
+    return `${h}h ${m}m`;
+  } catch (e) {
+    return "N/A";
+  }
+};
+
+export const getUVDescription = (uv: number): string => {
+  if (uv <= 2) return "Low";
+  if (uv <= 6) return "Medium";
+  return "High";
+};
+
+export const getPressureDescription = (mb: number): string => {
+  if (mb < 1000) return "Low";
+  if (mb <= 1020) return "Medium";
+  return "High";
+};
+
+export const getVisibilityDescription = (km: number): string => {
+  if (km < 5) return "Low";
+  if (km <= 10) return "Medium";
+  return "High";
+};
+
+export const getAQIDescription = (aqi: number): string => {
+  if (aqi <= 1) return "Excellent";
+  if (aqi === 2) return "Good";
+  return "Bad";
+};
+
 export const fetchWeather = async (city: string): Promise<WeatherData> => {
   if (!API_KEY) {
     throw new Error("No WeatherAPI key found in environment variables");
@@ -47,7 +101,7 @@ export const fetchWeather = async (city: string): Promise<WeatherData> => {
 
   try {
     const response = await fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${encodeURIComponent(city)}&days=1&aqi=no&alerts=no`
+      `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${encodeURIComponent(city)}&days=1&aqi=yes&alerts=no`
     );
     
     if (!response.ok) {
@@ -80,6 +134,12 @@ export const fetchWeather = async (city: string): Promise<WeatherData> => {
       sunriseAction: subtract30Minutes(sunrise),
       sunsetAction: subtract30Minutes(sunset),
       moon_phase: astro?.moon_phase || "N/A",
+      uv: data.current.uv,
+      humidity: data.current.humidity,
+      pressure_mb: data.current.pressure_mb,
+      vis_km: data.current.vis_km,
+      aqi: data.current.air_quality?.["us-epa-index"] || 0,
+      sun_hours: calculateSunHours(sunrise, sunset),
     };
   } catch (error) {
     console.error(`Error fetching weather for ${city}:`, error);
