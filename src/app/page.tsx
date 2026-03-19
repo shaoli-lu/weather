@@ -51,7 +51,7 @@ const LiveClock = () => {
 export default function Home() {
   const [data, setData] = useState<WeatherData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'slideshow' | 'cities' | 'hot' | 'cool'>('slideshow');
+  const [activeTab, setActiveTab] = useState<'slideshow' | 'cities' | 'hot' | 'cool'>('cities');
   const [searchQuery, setSearchQuery] = useState('');
   const [mounted, setMounted] = useState(false);
 
@@ -139,10 +139,10 @@ export default function Home() {
 
       <nav className="tab-container mt-20">
         {[
-          { id: 'slideshow', label: 'Slideshow' },
           { id: 'cities', label: 'Cities' },
           { id: 'hot', label: 'Hot' },
-          { id: 'cool', label: 'Cool' }
+          { id: 'cool', label: 'Cool' },
+          { id: 'slideshow', label: 'Slideshow' }
         ].map((tab) => (
           <button
             key={tab.id}
