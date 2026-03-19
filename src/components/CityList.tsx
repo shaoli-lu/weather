@@ -42,7 +42,7 @@ export default function CityList({ data, type }: CityListProps) {
           <div className="flex justify-between items-start">
             <div className="flex flex-col">
               <span className="text-[10px] text-accent/60 font-bold tracking-widest uppercase mb-1">{city.country}</span>
-              <h3 className="text-2xl font-bold text-[#ff3333] tracking-tight leading-tight">
+              <h3 className="text-2xl font-bold tracking-tight leading-tight" style={{ color: 'red' }}>
                 {city.city}
               </h3>
             </div>
@@ -60,27 +60,27 @@ export default function CityList({ data, type }: CityListProps) {
           <div className="grid grid-cols-2 gap-y-3 gap-x-2 py-4 border-t border-b border-white/5 my-2">
             <div className="flex flex-col">
               <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">UV Index: </span>
-              <span className="text-[10px] font-bold text-[#ff3333] text-left">{city.uv} ({getUVDescription(city.uv)})</span>
+              <span className="text-[10px] font-bold text-left" style={{ color: 'red' }}>{city.uv} ({getUVDescription(city.uv)})</span>
             </div>
             <div className="flex flex-col">
               <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">Humidity: </span>
-              <span className="text-[10px] font-bold text-[#ff3333] text-left">{city.humidity}%</span>
+              <span className="text-[10px] font-bold text-left" style={{ color: 'red' }}>{city.humidity}%</span>
             </div>
             <div className="flex flex-col">
               <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">Pressure: </span>
-              <span className="text-[10px] font-bold text-[#ff3333] text-left">{city.pressure_mb} mb ({getPressureDescription(city.pressure_mb)})</span>
+              <span className="text-[10px] font-bold text-left" style={{ color: 'red' }}>{city.pressure_mb} mb ({getPressureDescription(city.pressure_mb)})</span>
             </div>
             <div className="flex flex-col">
               <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">Visibility: </span>
-              <span className="text-[10px] font-bold text-[#ff3333] text-left">{city.vis_km} km ({getVisibilityDescription(city.vis_km)})</span>
+              <span className="text-[10px] font-bold text-left" style={{ color: 'red' }}>{city.vis_km} km ({getVisibilityDescription(city.vis_km)})</span>
             </div>
             <div className="flex flex-col">
               <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">AQI (EPA): </span>
-              <span className="text-[10px] font-bold text-[#ff3333] text-left">{city.aqi} ({getAQIDescription(city.aqi)})</span>
+              <span className="text-[10px] font-bold text-left" style={{ color: 'red' }}>{city.aqi} ({getAQIDescription(city.aqi)})</span>
             </div>
             <div className="flex flex-col">
               <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">Daylight: </span>
-              <span className="text-[10px] font-bold text-[#ff3333] text-left">{city.sun_hours}</span>
+              <span className="text-[10px] font-bold text-left" style={{ color: 'red' }}>{city.sun_hours}</span>
             </div>
           </div>
           <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
@@ -88,7 +88,7 @@ export default function CityList({ data, type }: CityListProps) {
               <img src={city.icon} alt={city.condition} className="w-6 h-6 object-contain" />
               <span className="text-[11px] font-semibold text-white/70 uppercase tracking-widest">{city.condition}</span>
             </div>
-            <span className="text-[10px] text-muted font-medium italic">Moon Phase: <span className="text-[#ff3333]">{city.moon_phase}</span></span>
+            <span className="text-[10px] text-muted font-medium italic">Moon Phase: <span style={{ color: 'red' }}>{city.moon_phase}</span></span>
           </div>
         </div>
       ))}
