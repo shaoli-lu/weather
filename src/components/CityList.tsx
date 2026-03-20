@@ -75,7 +75,7 @@ export default function CityList({ data, type }: CityListProps) {
               <span className="text-[10px] font-bold text-left" style={{ color: '#ff4444' }}>{city.vis_km} km ({getVisibilityDescription(city.vis_km)})</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">AQI (EPA): </span>
+              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">EPA Index: </span>
               <span className="text-[10px] font-bold text-left" style={{ color: '#ff4444' }}>{city.aqi} ({getAQIDescription(city.aqi)})</span>
             </div>
             <div className="flex flex-col">

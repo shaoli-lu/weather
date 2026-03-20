@@ -89,9 +89,13 @@ export const getVisibilityDescription = (km: number): string => {
 };
 
 export const getAQIDescription = (aqi: number): string => {
-  if (aqi <= 1) return "Excellent";
-  if (aqi === 2) return "Good";
-  return "Bad";
+  if (aqi <= 1) return "Good";
+  if (aqi === 2) return "Moderate";
+  if (aqi === 3) return "Unhealthy for Sensitive Groups";
+  if (aqi === 4) return "Unhealthy";
+  if (aqi === 5) return "Very Unhealthy";
+  if (aqi >= 6) return "Hazardous";
+  return "Unknown";
 };
 
 export const fetchWeather = async (city: string): Promise<WeatherData> => {
