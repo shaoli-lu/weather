@@ -22,6 +22,16 @@ export const OTHER_CITIES = [
   "Toronto Canada",
   "Berlin Germany",
   "Rome Italy",
+  "Jilin China",
+  "Shenyang China",
+  "Changchun China",
+  "Beijing China",
+  "Shanghai China",
+  "Guangzhou China",
+  "Chongqing China",
+  "Kunming China",
+  "Hainan China",
+  "Taipei Taiwan",
 ];
 
 export const ALL_CITIES = [...FOCUSED_CITIES, ...OTHER_CITIES];
