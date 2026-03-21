@@ -27,7 +27,7 @@ const LiveClock = () => {
   const { timeStr, period } = formatParts();
 
   return (
-    <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', pointerEvents: 'none', paddingBottom: '8px' }}>
+    <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', pointerEvents: 'none' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <div style={{
           width: '6px', height: '6px', borderRadius: '50%',
@@ -149,10 +149,10 @@ export default function Home() {
         {/* HEADER */}
         <header style={{
           width: '100%',
-          marginBottom: '48px',
+          marginBottom: '16px',
           display: 'grid',
           gridTemplateColumns: '1fr auto 1fr',
-          gap: '16px',
+          gap: '12px',
           alignItems: 'center',
         }}>
           {/* BRANDING: Left */}
@@ -222,7 +222,7 @@ export default function Home() {
         `}</style>
 
         {/* TAB BAR */}
-        <nav className="tab-container" style={{ marginTop: '8px' }}>
+        <nav className="tab-container">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -235,7 +235,7 @@ export default function Home() {
         </nav>
 
         {/* CONTENT */}
-        <section style={{ width: '100%', flex: 1 }}>
+        <section style={{ width: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}>
           {!mounted || loading ? (
             <div style={{
               display: 'flex', flexDirection: 'column',
@@ -255,7 +255,7 @@ export default function Home() {
               </p>
             </div>
           ) : (
-            <div style={{ width: '100%' }}>
+            <div style={{ width: '100%', flex: 1 }}>
               {activeTab === 'slideshow' && (
                 <Slideshow data={getSortedData('cities')} />
               )}
@@ -268,8 +268,8 @@ export default function Home() {
 
         {/* FOOTER */}
         <footer style={{
-          marginTop: '80px',
-          padding: '24px 0',
+          marginTop: '24px',
+          padding: '16px 0',
           textAlign: 'center',
           borderTop: '1px solid rgba(255,255,255,0.04)'
         }}>
