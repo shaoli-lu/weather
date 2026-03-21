@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription } from '@/lib/weather';
+import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese } from '@/lib/weather';
 
 export default function Slideshow({ data }: { data: WeatherData[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -135,6 +135,9 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
               <div className="flex flex-col items-center">
                 <span className="text-[11px] font-black text-muted uppercase tracking-[0.5em]">
                   Moon Phase: <span style={{ color: '#ff4444' }}>{currentCity.moon_phase}</span>
+                  {getMoonPhaseChinese(currentCity.moon_phase) && (
+                    <span className="ml-2 opacity-80" style={{ color: '#ff4444' }}>({getMoonPhaseChinese(currentCity.moon_phase)})</span>
+                  )}
                 </span>
               </div>
             </div>

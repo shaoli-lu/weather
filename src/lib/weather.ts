@@ -98,6 +98,21 @@ export const getAQIDescription = (aqi: number): string => {
   return "Unknown";
 };
 
+export const moonPhaseChinese: Record<string, string> = {
+  "New Moon": "新月",
+  "Waxing Crescent": "蛾眉月",
+  "First Quarter": "上弦月",
+  "Waxing Gibbous": "盈凸月",
+  "Full Moon": "满月",
+  "Waning Gibbous": "亏凸月",
+  "Last Quarter": "下弦月",
+  "Waning Crescent": "残月",
+};
+
+export const getMoonPhaseChinese = (phase: string): string => {
+  return moonPhaseChinese[phase] || "";
+};
+
 export const fetchWeather = async (city: string): Promise<WeatherData> => {
   if (!API_KEY) {
     throw new Error("No WeatherAPI key found in environment variables");

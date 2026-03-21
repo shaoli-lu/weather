@@ -1,5 +1,5 @@
 import React from 'react';
-import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription } from '@/lib/weather';
+import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese } from '@/lib/weather';
 
 interface CityListProps {
   data: WeatherData[];
@@ -88,7 +88,7 @@ export default function CityList({ data, type }: CityListProps) {
               <img src={city.icon} alt={city.condition} className="w-6 h-6 object-contain" />
               <span className="text-[11px] font-semibold text-white/70 uppercase tracking-widest">{city.condition}</span>
             </div>
-            <span className="text-[10px] text-muted font-medium italic">Moon Phase: <span style={{ color: '#ff4444' }}>{city.moon_phase}</span></span>
+            <span className="text-[10px] text-muted font-medium italic">Moon Phase: <span style={{ color: '#ff4444' }}>{city.moon_phase}{getMoonPhaseChinese(city.moon_phase) && ` (${getMoonPhaseChinese(city.moon_phase)})`}</span></span>
           </div>
         </div>
       ))}
