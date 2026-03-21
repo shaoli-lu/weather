@@ -4,13 +4,20 @@ import React, { useState, useEffect } from 'react';
 import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese } from '@/lib/weather';
 import { getCityChinese } from '@/lib/cities';
 
+const getTempColor = (temp_f: number): string => {
+  if (temp_f >= 90) return '#ff6b35';
+  if (temp_f >= 75) return '#f97316';
+  if (temp_f >= 60) return '#00d4ff';
+  if (temp_f >= 45) return '#38bdf8';
+  return '#818cf8';
+};
+
 export default function Slideshow({ data }: { data: WeatherData[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [fade, setFade] = useState(true);
 
   useEffect(() => {
-    // Reset index if data changes (e.g. search) to avoid out of bounds
     setCurrentIndex(0);
   }, [data.length]);
 
@@ -22,157 +29,275 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % data.length);
         setFade(true);
-      }, 500); // Quick fade
-    }, 5000); // 5 seconds per slide
+      }, 500);
+    }, 5000);
 
     return () => clearInterval(timer);
   }, [isPaused, data.length]);
 
   if (data.length === 0) {
     return (
-      <div className="text-center py-20 glass-card">
-        <p className="text-gray-400 font-bold uppercase tracking-widest text-sm">Searching for the sun...</p>
+      <div className="glass-panel" style={{ textAlign: 'center', padding: '80px 24px' }}>
+        <p style={{ color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.85rem' }}>
+          Searching for the sun...
+        </p>
       </div>
     );
   }
 
-  // Safety check: ensure index is in bounds even during rapid data changes (search)
   const safeIndex = currentIndex >= data.length ? 0 : currentIndex;
-  const currentCity = data[safeIndex];
+  const city = data[safeIndex];
+  const tempColor = getTempColor(city.temp_f);
 
   return (
     <div
-      className="relative w-full flex flex-col items-center justify-center min-h-[450px] cursor-pointer"
+      style={{
+        position: 'relative', width: '100%',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        minHeight: '480px', cursor: 'pointer'
+      }}
       onClick={() => setIsPaused(!isPaused)}
     >
-      {/* Slides Content */}
-      <div className={`w-full max-w-4xl px-4 flex flex-col items-center transition-all duration-700 ease-in-out ${fade ? 'opacity-100 scale-100' : 'opacity-0 scale-98'}`}>
+      {/* Atmospheric glow behind the card */}
+      <div style={{
+        position: 'absolute',
+        width: '300px', height: '300px',
+        borderRadius: '50%',
+        background: `radial-gradient(circle, ${tempColor}10, transparent 70%)`,
+        top: '50%', left: '50%',
+        transform: 'translate(-50%, -50%)',
+        filter: 'blur(60px)',
+        pointerEvents: 'none',
+        transition: 'background 0.7s ease'
+      }} />
 
-        {/* INFO STACK - FORCED CENTER */}
-        <div className="flex flex-col items-center justify-center w-full gap-12 z-10">
+      {/* SLIDE CONTENT */}
+      <div style={{
+        width: '100%', maxWidth: '900px', padding: '0 16px',
+        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
+        opacity: fade ? 1 : 0,
+        transform: fade ? 'scale(1) translateY(0)' : 'scale(0.97) translateY(8px)'
+      }}>
+        {/* ASTRONOMY ROW */}
+        <div style={{
+          display: 'flex', gap: '48px', justifyContent: 'center',
+          flexWrap: 'wrap', marginBottom: '24px'
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+            <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+              ☀️ Sunrise
+            </span>
+            <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--accent)' }}>{city.sunrise}</span>
+            <span style={{ fontSize: '0.6rem', fontWeight: 600, color: 'var(--text-muted)', opacity: 0.7 }}>
+              Watch at: {city.sunriseAction}
+            </span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+            <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+              🌅 Sunset
+            </span>
+            <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--accent-secondary)' }}>{city.sunset}</span>
+            <span style={{ fontSize: '0.6rem', fontWeight: 600, color: 'var(--text-muted)', opacity: 0.7 }}>
+              Watch at: {city.sunsetAction}
+            </span>
+          </div>
+        </div>
 
-          {/* 1. Astronomy Row (Sunrise/Sunset) */}
-          <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-20 text-center">
-            <div className="flex flex-col items-center justify-center">
-              <div className="flex flex-col items-center">
-                <span className="text-[10px] font-bold text-muted uppercase tracking-widest leading-relaxed">Sunrise: {currentCity.sunrise}</span>
-                <span className="text-[11px] font-extrabold text-accent uppercase tracking-[0.2em]">Watch at: {currentCity.sunriseAction}</span>
-              </div>
-            </div>
-          
-            <div className="flex flex-col items-center justify-center">
-              <div className="flex flex-col items-center">
-                <span className="text-[10px] font-bold text-muted uppercase tracking-widest leading-relaxed">Sunset: {currentCity.sunset}</span>
-                <span className="text-[11px] font-extrabold text-accent uppercase tracking-[0.2em]">Watch at: {currentCity.sunsetAction}</span>
-              </div>
-            </div>
+        {/* MAIN GLASS PANEL */}
+        <div className="glass-panel" style={{
+          width: '100%', padding: '48px 40px',
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'center', gap: '32px',
+          position: 'relative', overflow: 'hidden'
+        }}>
+          {/* Glow blob inside card */}
+          <div style={{
+            position: 'absolute',
+            top: '50%', left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '350px', height: '350px',
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${tempColor}08, transparent 70%)`,
+            filter: 'blur(80px)',
+            pointerEvents: 'none'
+          }} />
+
+          {/* LOCATION */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', zIndex: 1 }}>
+            {city.country && (
+              <span style={{
+                fontSize: '0.65rem', fontWeight: 700,
+                color: 'var(--accent)', opacity: 0.7,
+                letterSpacing: '0.4em', textTransform: 'uppercase',
+                marginBottom: '12px'
+              }}>
+                {city.country}
+              </span>
+            )}
+            <h2 className="gradient-text" style={{
+              fontSize: 'clamp(2.5rem, 8vw, 5rem)',
+              fontWeight: 900,
+              letterSpacing: '-0.04em',
+              lineHeight: 1,
+              marginBottom: '8px'
+            }}>
+              {city.city}
+            </h2>
+            {getCityChinese(city.city) && (
+              <span style={{ fontSize: '1.2rem', color: 'var(--text-muted)', fontWeight: 500, opacity: 0.6 }}>
+                {getCityChinese(city.city)}
+              </span>
+            )}
           </div>
 
-          {/* 2. Main City Panel */}
-          <div className="glass-panel w-full p-10 md:p-16 flex flex-col items-center justify-center gap-10 relative overflow-hidden">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-accent/5 rounded-full blur-[100px]"></div>
+          {/* CONDITION */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', zIndex: 1 }}>
+            <img
+              src={city.icon.startsWith('//') ? `https:${city.icon.replace('64x64', '128x128')}` : city.icon}
+              alt=""
+              className="animate-float"
+              style={{ width: '56px', height: '56px', objectFit: 'contain' }}
+            />
+            <span style={{
+              fontSize: '0.85rem', fontWeight: 700,
+              color: 'var(--text-secondary)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.25em'
+            }}>{city.condition}</span>
+          </div>
 
-            {/* Location & City */}
-            <div className="flex flex-col items-center text-center w-full">
-              {currentCity.country && (
-                <span className="text-accent/70 font-bold tracking-[0.5em] uppercase text-[10px] mb-4">
-                  Now in {currentCity.country}
+          {/* TEMPERATURE */}
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '12px', zIndex: 1 }}>
+            <span style={{
+              fontSize: 'clamp(4rem, 15vw, 8rem)',
+              fontWeight: 900,
+              color: tempColor,
+              letterSpacing: '-0.05em',
+              lineHeight: 1,
+              textShadow: `0 0 60px ${tempColor}30`
+            }}>
+              {Math.round(city.temp_f)}°
+            </span>
+            <span style={{
+              fontSize: '1.5rem', fontWeight: 300,
+              color: 'var(--text-muted)', opacity: 0.4
+            }}>
+              / {city.temp_c.toFixed(1)}°C
+            </span>
+          </div>
+
+          <div className="glass-divider" />
+
+          {/* WEATHER DETAILS GRID */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '24px 32px',
+            width: '100%', maxWidth: '640px',
+            padding: '24px 0',
+            zIndex: 1
+          }}>
+            {[
+              { label: 'UV Index', value: `${city.uv}`, desc: getUVDescription(city.uv) },
+              { label: 'Humidity', value: `${city.humidity}%`, desc: null },
+              { label: 'Pressure', value: `${city.pressure_mb} mb`, desc: getPressureDescription(city.pressure_mb) },
+              { label: 'Visibility', value: `${city.vis_km} km`, desc: getVisibilityDescription(city.vis_km) },
+              { label: 'AQI (EPA)', value: `${city.aqi}`, desc: getAQIDescription(city.aqi) },
+              { label: 'Daylight', value: city.sun_hours, desc: null },
+            ].map((item, i) => (
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                <span style={{
+                  fontSize: '0.6rem', fontWeight: 700,
+                  color: 'var(--text-muted)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.15em'
+                }}>{item.label}</span>
+                <span style={{
+                  fontSize: '1.1rem', fontWeight: 700,
+                  color: 'var(--text-primary)'
+                }}>
+                  {item.value}
+                </span>
+                {item.desc && (
+                  <span style={{
+                    fontSize: '0.65rem', fontWeight: 500,
+                    color: 'var(--accent)', opacity: 0.7
+                  }}>{item.desc}</span>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* MOON PHASE */}
+          <div style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center',
+            gap: '2px', zIndex: 1
+          }}>
+            <span style={{
+              fontSize: '0.65rem', fontWeight: 700,
+              color: 'var(--text-muted)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.2em'
+            }}>
+              🌙 Moon Phase
+            </span>
+            <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+              {city.moon_phase}
+              {getMoonPhaseChinese(city.moon_phase) && (
+                <span style={{ color: 'var(--accent)', marginLeft: '8px', opacity: 0.8 }}>
+                  {getMoonPhaseChinese(city.moon_phase)}
                 </span>
               )}
-              <h2 className={`font-black tracking-tighter leading-none mb-6 ${currentCity.country ? 'text-5xl md:text-8xl' : 'text-6xl md:text-9xl mt-4'}`} style={{ color: '#ff4444' }}>
-                {currentCity.city}
-                {getCityChinese(currentCity.city) && (
-                  <span className="text-2xl md:text-3xl opacity-80" style={{ color: '#ff4444' }}> ({getCityChinese(currentCity.city)})</span>
-                )}
-              </h2>
-
-              <div className="flex flex-col items-center gap-3">
-                <img
-                  src={currentCity.icon.startsWith('//') ? `https:${currentCity.icon.replace('64x64', '128x128')}` : currentCity.icon}
-                  alt=""
-                  className="w-14 h-14 object-contain animate-float"
-                />
-                <span className="text-lg font-bold text-muted uppercase tracking-[0.4em]">{currentCity.condition}</span>
-              </div>
-            </div>
-
-            {/* Temperature & Moon */}
-            <div className="flex flex-col items-center text-center w-full">
-              <div className="flex items-baseline justify-center gap-4">
-                <span className="text-8xl md:text-[10rem] font-black text-accent tracking-tighter leading-none">
-                  {Math.round(currentCity.temp_f)}°
-                </span>
-                <span className="text-2xl md:text-3xl font-light text-muted opacity-40">
-                  / {currentCity.temp_c.toFixed(1)}°C
-                </span>
-              </div>
-
-              <div className="w-20 h-[1.5px] bg-accent/20 my-8"></div>
-                           {/* SLIDESHOW WEATHER DETAILS GRID */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-8 md:gap-x-12 py-8 border-t border-b border-white/5 my-8 w-full max-w-2xl mx-auto">
-                <div className="flex flex-col items-center">
-                  <span className="text-[9px] md:text-[10px] text-muted font-black uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-60 mb-2">UV Index: </span>
-                  <span className="text-lg md:text-xl font-bold" style={{ color: '#ff4444' }}>{currentCity.uv} ({getUVDescription(currentCity.uv)})</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <span className="text-[9px] md:text-[10px] text-muted font-black uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-60 mb-2">Humidity: </span>
-                  <span className="text-lg md:text-xl font-bold" style={{ color: '#ff4444' }}>{currentCity.humidity}%</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <span className="text-[9px] md:text-[10px] text-muted font-black uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-60 mb-2">Pressure: </span>
-                  <span className="text-lg md:text-xl font-bold" style={{ color: '#ff4444' }}>{currentCity.pressure_mb} mb ({getPressureDescription(currentCity.pressure_mb)})</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <span className="text-[9px] md:text-[10px] text-muted font-black uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-60 mb-2">Visibility: </span>
-                  <span className="text-lg md:text-xl font-bold" style={{ color: '#ff4444' }}>{currentCity.vis_km} km ({getVisibilityDescription(currentCity.vis_km)})</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <span className="text-[9px] md:text-[10px] text-muted font-black uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-60 mb-2">AQI (EPA): </span>
-                  <span className="text-lg md:text-xl font-bold" style={{ color: '#ff4444' }}>{currentCity.aqi} ({getAQIDescription(currentCity.aqi)})</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <span className="text-[9px] md:text-[10px] text-muted font-black uppercase tracking-[0.3em] md:tracking-[0.4em] opacity-60 mb-2">Daylight: </span>
-                  <span className="text-lg md:text-xl font-bold" style={{ color: '#ff4444' }}>{currentCity.sun_hours}</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col items-center">
-                <span className="text-[11px] font-black text-muted uppercase tracking-[0.5em]">
-                  Moon Phase: <span style={{ color: '#ff4444' }}>{currentCity.moon_phase}</span>
-                  {getMoonPhaseChinese(currentCity.moon_phase) && (
-                    <span className="ml-2 opacity-80" style={{ color: '#ff4444' }}>({getMoonPhaseChinese(currentCity.moon_phase)})</span>
-                  )}
-                </span>
-              </div>
-            </div>
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Navigation Indicators */}
-      <div className="mt-12 flex flex-col items-center gap-6">
-        <div className="flex gap-2">
+      {/* NAVIGATION */}
+      <div style={{
+        marginTop: '32px',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', gap: '16px'
+      }}>
+        {/* Dots */}
+        <div style={{ display: 'flex', gap: '6px' }}>
           {data.map((_, idx) => (
             <div
               key={idx}
-              className={`h-1 rounded-full transition-all duration-500 ${idx === currentIndex ? 'w-8 bg-accent' : 'w-2 bg-white/10'
-                }`}
+              style={{
+                height: '4px',
+                borderRadius: '2px',
+                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                width: idx === safeIndex ? '28px' : '8px',
+                background: idx === safeIndex
+                  ? 'linear-gradient(90deg, var(--accent), var(--accent-secondary))'
+                  : 'rgba(255,255,255,0.08)'
+              }}
             />
           ))}
         </div>
 
-        <div className={`text-[9px] font-bold uppercase tracking-[0.3em] transition-all duration-300 ${isPaused ? 'text-accent' : 'text-muted'}`}>
+        {/* Status */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '8px',
+          fontSize: '0.6rem', fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.25em',
+          color: isPaused ? 'var(--accent-warm)' : 'var(--text-muted)'
+        }}>
+          <div className={`status-dot ${isPaused ? 'paused' : 'live'}`} />
           {isPaused ? 'PAUSED' : 'LIVE'}
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-8px); }
-        }
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
+      {/* Responsive grid fallback for small screens */}
+      <style>{`
+        @media (max-width: 600px) {
+          .slideshow-details-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
         }
       `}</style>
     </div>

@@ -7,95 +7,204 @@ interface CityListProps {
   type: 'cities' | 'hot' | 'cool';
 }
 
+/* Small helper to get a temp-based accent color */
+const getTempColor = (temp_f: number): string => {
+  if (temp_f >= 90) return '#ff6b35';
+  if (temp_f >= 75) return '#f97316';
+  if (temp_f >= 60) return '#00d4ff';
+  if (temp_f >= 45) return '#38bdf8';
+  return '#818cf8';
+};
+
+/* Tiny SVG icons for weather details */
+const SunriseIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2v4" /><path d="M12 18v4" />
+    <path d="m4.93 4.93 2.83 2.83" /><path d="m16.24 16.24 2.83 2.83" />
+    <path d="M2 12h4" /><path d="M18 12h4" />
+    <path d="m4.93 19.07 2.83-2.83" /><path d="m16.24 7.76 2.83-2.83" />
+  </svg>
+);
+
+const SunsetIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 10V2" /><path d="m4.93 10.93 1.41 1.41" />
+    <path d="M2 18h2" /><path d="M20 18h2" /><path d="m19.07 10.93-1.41 1.41" />
+    <path d="M22 22H2" /><path d="M16 18a4 4 0 0 0-8 0" />
+  </svg>
+);
+
 export default function CityList({ data, type }: CityListProps) {
   if (data.length === 0) {
     return (
-      <div className="text-center py-24 glass-card border-dashed">
-        <p className="text-gray-500 font-bold uppercase tracking-widest text-sm">No horizons found</p>
+      <div className="glass-panel" style={{
+        textAlign: 'center', padding: '80px 24px',
+        borderStyle: 'dashed'
+      }}>
+        <p style={{ color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.85rem' }}>
+          No horizons found
+        </p>
       </div>
     );
   }
 
   return (
     <div className="city-grid">
-      {data.map((city, index) => (
-        <div
-          key={`${city.queryCity}-${index}`}
-          className="glass-panel p-6 flex flex-col gap-4 hover:border-accent/40 transition-colors"
-        >
-          {/* TOP: Astronomy Stats */}
-          <div className="flex justify-between items-center px-1">
-            <div className="flex items-center gap-2">
-              <div className="flex flex-col">
-                <span className="text-[9px] font-bold text-muted uppercase tracking-tight">Sunrise: {city.sunrise}</span>
-                <span className="text-[8px] font-bold text-accent uppercase">Watch: {city.sunriseAction}</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 text-right">
-              <div className="flex flex-col">
-                <span className="text-[9px] font-bold text-muted uppercase tracking-tight">Sunset: {city.sunset}</span>
-                <span className="text-[8px] font-bold text-accent uppercase">Watch: {city.sunsetAction}</span>
-              </div>
-            </div>
-          </div>
+      {data.map((city, index) => {
+        const tempColor = getTempColor(city.temp_f);
 
-          {/* MAIN INFO */}
-          <div className="flex justify-between items-start">
-            <div className="flex flex-col">
-              <span className="text-[10px] text-accent/60 font-bold tracking-widest uppercase mb-1">{city.country}</span>
-              <h3 className="text-2xl font-bold tracking-tight leading-tight" style={{ color: '#ff4444' }}>
-                {city.city}
-                {getCityChinese(city.city) && (
-                  <span className="text-lg opacity-70"> ({getCityChinese(city.city)})</span>
+        return (
+          <div
+            key={`${city.queryCity}-${index}`}
+            className="glass-panel card-animate"
+            style={{
+              padding: '24px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+              animationDelay: `${index * 0.04}s`,
+            }}
+          >
+            {/* ASTRONOMY ROW */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '0 2px',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <SunriseIcon />
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '0.65rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.02em' }}>
+                    {city.sunrise}
+                  </span>
+                  <span style={{ fontSize: '0.58rem', fontWeight: 600, color: 'var(--accent)', opacity: 0.8 }}>
+                    Watch: {city.sunriseAction}
+                  </span>
+                </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', textAlign: 'right' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '0.65rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.02em' }}>
+                    {city.sunset}
+                  </span>
+                  <span style={{ fontSize: '0.58rem', fontWeight: 600, color: 'var(--accent-secondary)', opacity: 0.8 }}>
+                    Watch: {city.sunsetAction}
+                  </span>
+                </div>
+                <SunsetIcon />
+              </div>
+            </div>
+
+            <div className="glass-divider" />
+
+            {/* MAIN INFO */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {city.country && (
+                  <span style={{
+                    fontSize: '0.6rem', fontWeight: 700,
+                    color: 'var(--accent)',
+                    letterSpacing: '0.15em',
+                    textTransform: 'uppercase',
+                    marginBottom: '4px',
+                    opacity: 0.7
+                  }}>
+                    {city.country}
+                  </span>
                 )}
-              </h3>
+                <h3 style={{
+                  fontSize: '1.45rem', fontWeight: 800,
+                  letterSpacing: '-0.03em',
+                  lineHeight: 1.15,
+                  color: 'var(--text-primary)'
+                }}>
+                  {city.city}
+                  {getCityChinese(city.city) && (
+                    <span style={{ fontSize: '0.9rem', opacity: 0.5, fontWeight: 500, marginLeft: '6px' }}>
+                      {getCityChinese(city.city)}
+                    </span>
+                  )}
+                </h3>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                <span style={{
+                  fontSize: '2rem', fontWeight: 900,
+                  color: tempColor,
+                  letterSpacing: '-0.04em',
+                  lineHeight: 1
+                }}>
+                  {Math.round(city.temp_f)}°
+                </span>
+                <span style={{
+                  fontSize: '0.65rem', fontWeight: 600,
+                  color: 'var(--text-muted)',
+                  marginTop: '4px'
+                }}>
+                  {city.temp_c.toFixed(1)}°C
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col items-end">
-              <span className="text-3xl font-extrabold text-accent tracking-tighter">
-                {Math.round(city.temp_f)}°
-              </span>
-              <span className="text-[10px] text-muted font-bold tracking-wider mt-1">
-                {city.temp_c.toFixed(1)}°C
-              </span>
-            </div>
-          </div>
 
-          {/* WEATHER DETAILS GRID */}
-          <div className="grid grid-cols-2 gap-y-3 gap-x-2 py-4 border-t border-b border-white/5 my-2">
-            <div className="flex flex-col">
-              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">UV Index: </span>
-              <span className="text-[10px] font-bold text-left" style={{ color: '#ff4444' }}>{city.uv} ({getUVDescription(city.uv)})</span>
+            {/* WEATHER DETAILS GRID */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '12px 16px',
+              padding: '16px 0',
+              borderTop: '1px solid rgba(255,255,255,0.04)',
+              borderBottom: '1px solid rgba(255,255,255,0.04)',
+            }}>
+              {[
+                { label: 'UV Index', value: `${city.uv}`, desc: getUVDescription(city.uv) },
+                { label: 'Humidity', value: `${city.humidity}%`, desc: null },
+                { label: 'Pressure', value: `${city.pressure_mb} mb`, desc: getPressureDescription(city.pressure_mb) },
+                { label: 'Visibility', value: `${city.vis_km} km`, desc: getVisibilityDescription(city.vis_km) },
+                { label: 'EPA Index', value: `${city.aqi}`, desc: getAQIDescription(city.aqi) },
+                { label: 'Daylight', value: city.sun_hours, desc: null },
+              ].map((item, i) => (
+                <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                  <span className="detail-label">{item.label}</span>
+                  <span className="detail-value">
+                    {item.value}
+                    {item.desc && <span className="descriptor"> · {item.desc}</span>}
+                  </span>
+                </div>
+              ))}
             </div>
-            <div className="flex flex-col">
-              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">Humidity: </span>
-              <span className="text-[10px] font-bold text-left" style={{ color: '#ff4444' }}>{city.humidity}%</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">Pressure: </span>
-              <span className="text-[10px] font-bold text-left" style={{ color: '#ff4444' }}>{city.pressure_mb} mb ({getPressureDescription(city.pressure_mb)})</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">Visibility: </span>
-              <span className="text-[10px] font-bold text-left" style={{ color: '#ff4444' }}>{city.vis_km} km ({getVisibilityDescription(city.vis_km)})</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">EPA Index: </span>
-              <span className="text-[10px] font-bold text-left" style={{ color: '#ff4444' }}>{city.aqi} ({getAQIDescription(city.aqi)})</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[8px] text-muted font-black uppercase tracking-widest opacity-60 text-left">Daylight: </span>
-              <span className="text-[10px] font-bold text-left" style={{ color: '#ff4444' }}>{city.sun_hours}</span>
+
+            {/* FOOTER: CONDITION & MOON */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingTop: '8px',
+              marginTop: 'auto'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <img src={city.icon} alt={city.condition} style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
+                <span style={{
+                  fontSize: '0.7rem', fontWeight: 600,
+                  color: 'var(--text-secondary)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em'
+                }}>{city.condition}</span>
+              </div>
+              <span style={{
+                fontSize: '0.62rem', fontWeight: 500,
+                color: 'var(--text-muted)', fontStyle: 'italic'
+              }}>
+                🌙 {city.moon_phase}
+                {getMoonPhaseChinese(city.moon_phase) && (
+                  <span style={{ color: 'var(--accent)', marginLeft: '4px' }}>
+                    {getMoonPhaseChinese(city.moon_phase)}
+                  </span>
+                )}
+              </span>
             </div>
           </div>
-          <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
-            <div className="flex items-center gap-3">
-              <img src={city.icon} alt={city.condition} className="w-6 h-6 object-contain" />
-              <span className="text-[11px] font-semibold text-white/70 uppercase tracking-widest">{city.condition}</span>
-            </div>
-            <span className="text-[10px] text-muted font-medium italic">Moon Phase: <span style={{ color: '#ff4444' }}>{city.moon_phase}{getMoonPhaseChinese(city.moon_phase) && ` (${getMoonPhaseChinese(city.moon_phase)})`}</span></span>
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
