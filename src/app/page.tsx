@@ -158,12 +158,69 @@ export default function Home() {
           {/* BRANDING: Left */}
           <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column' }}>
             <h1 style={{
-              fontSize: '1.6rem', fontWeight: 900,
-              letterSpacing: '-0.04em',
+              fontSize: '1.8rem', fontWeight: 900,
+              letterSpacing: '-0.03em',
               lineHeight: 1,
+              display: 'flex',
+              alignItems: 'baseline',
             }}>
-              <span style={{ color: 'var(--text-primary)' }}>Sun</span>
-              <span className="gradient-text">Rise</span>
+              {/* "Sun" in rainbow */}
+              <span style={{
+                background: 'linear-gradient(90deg, #ff2d2d, #ff6b1a, #ffb800)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>Sun</span>
+              {/* "R" */}
+              <span style={{
+                background: 'linear-gradient(90deg, #ffb800, #ffe14d)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>R</span>
+              {/* "ise" with mini sun replacing the dot on the i */}
+              <span style={{ position: 'relative', display: 'inline' }}>
+                {/* Mini sun positioned over the "i" dot */}
+                <span style={{
+                  position: 'absolute',
+                  top: '-0.05em',
+                  left: '0.18em',
+                  transform: 'translateX(-50%)',
+                  width: '8px',
+                  height: '8px',
+                  display: 'block',
+                  zIndex: 2,
+                }}>
+                  {/* Sun core */}
+                  <span style={{
+                    position: 'absolute',
+                    top: '50%', left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '6px', height: '6px',
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, #ffdd00, #ff8c00)',
+                    boxShadow: '0 0 6px #ffaa00, 0 0 12px rgba(255,170,0,0.4)',
+                    animation: 'sun-dot-pulse 2s ease-in-out infinite',
+                  }} />
+                  {/* Sun rays ring */}
+                  <span style={{
+                    position: 'absolute',
+                    top: '50%', left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '12px', height: '12px',
+                    borderRadius: '50%',
+                    border: '1px solid rgba(255,200,0,0.4)',
+                    animation: 'sun-dot-spin 6s linear infinite',
+                  }} />
+                </span>
+                {/* The actual "ise" text with dotless i */}
+                <span style={{
+                  background: 'linear-gradient(90deg, #ffe14d, #7cff6b, #00d4ff, #818cf8)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}>ıse</span>
+              </span>
             </h1>
             <p style={{
               fontSize: '0.6rem',
