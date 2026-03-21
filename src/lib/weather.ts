@@ -19,7 +19,7 @@ export interface WeatherData {
   sun_hours: string;
 }
 
-const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY || "";
+
 
 const subtract30Minutes = (timeStr: string): string => {
   if (!timeStr || timeStr === "N/A") return "N/A";
@@ -114,18 +114,14 @@ export const getMoonPhaseChinese = (phase: string): string => {
 };
 
 export const fetchWeather = async (city: string): Promise<WeatherData> => {
-  if (!API_KEY) {
-    throw new Error("No WeatherAPI key found in environment variables");
-  }
-
   try {
     const response = await fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${encodeURIComponent(city)}&days=1&aqi=yes&alerts=no`
+      `/api/weather?city=${encodeURIComponent(city)}`
     );
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(`API error (${response.status}): ${errorData.error?.message || response.statusText}`);
+      throw new Error(`Weather service error: ${errorData.error || response.statusText}`);
     }
 
     const data = await response.json();
