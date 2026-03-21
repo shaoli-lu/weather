@@ -35,3 +35,41 @@ export const OTHER_CITIES = [
 ];
 
 export const ALL_CITIES = [...FOCUSED_CITIES, ...OTHER_CITIES];
+
+export const cityChinese: Record<string, string> = {
+  "Milwaukee": "密尔沃基",
+  "Dublin": "都柏林",
+  "Chicago": "芝加哥",
+  "Atlanta": "亚特兰大",
+  "St. Paul": "圣保罗",
+  "St Paul": "圣保罗",
+  "Miami": "迈阿密",
+  "San Diego": "圣地亚哥",
+  "Loma Linda": "洛马林达",
+  "New York": "纽约",
+  "Los Angeles": "洛杉矶",
+  "London": "伦敦",
+  "Tokyo": "东京",
+  "Paris": "巴黎",
+  "Sydney": "悉尼",
+  "Dubai": "迪拜",
+  "Singapore": "新加坡",
+  "Mumbai": "孟买",
+  "Toronto": "多伦多",
+  "Berlin": "柏林",
+  "Rome": "罗马",
+  "Jilin": "吉林",
+  "Shenyang": "沈阳",
+  "Changchun": "长春",
+  "Beijing": "北京",
+  "Shanghai": "上海",
+  "Guangzhou": "广州",
+  "Chongqing": "重庆",
+  "Kunming": "昆明",
+  "Hainan": "海南",
+  "Taipei": "台北",
+};
+
+export const getCityChinese = (englishName: string): string => {
+  return cityChinese[englishName] || "";
+};

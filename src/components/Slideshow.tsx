@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese } from '@/lib/weather';
+import { getCityChinese } from '@/lib/cities';
 
 export default function Slideshow({ data }: { data: WeatherData[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -80,6 +81,9 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
               )}
               <h2 className={`font-black tracking-tighter leading-none mb-6 ${currentCity.country ? 'text-5xl md:text-8xl' : 'text-6xl md:text-9xl mt-4'}`} style={{ color: '#ff4444' }}>
                 {currentCity.city}
+                {getCityChinese(currentCity.city) && (
+                  <span className="text-2xl md:text-3xl opacity-80" style={{ color: '#ff4444' }}> ({getCityChinese(currentCity.city)})</span>
+                )}
               </h2>
 
               <div className="flex flex-col items-center gap-3">

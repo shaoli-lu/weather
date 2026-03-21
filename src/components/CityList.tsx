@@ -1,5 +1,6 @@
 import React from 'react';
 import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese } from '@/lib/weather';
+import { getCityChinese } from '@/lib/cities';
 
 interface CityListProps {
   data: WeatherData[];
@@ -44,6 +45,9 @@ export default function CityList({ data, type }: CityListProps) {
               <span className="text-[10px] text-accent/60 font-bold tracking-widest uppercase mb-1">{city.country}</span>
               <h3 className="text-2xl font-bold tracking-tight leading-tight" style={{ color: '#ff4444' }}>
                 {city.city}
+                {getCityChinese(city.city) && (
+                  <span className="text-lg opacity-70"> ({getCityChinese(city.city)})</span>
+                )}
               </h3>
             </div>
             <div className="flex flex-col items-end">
