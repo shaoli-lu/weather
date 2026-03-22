@@ -4,6 +4,8 @@ export const FOCUSED_CITIES = [
   "Chicago IL",
   "Atlanta GA",
   "St.Paul MN",
+  "San Jose CA",
+  "Davis CA",
   "Miami FL",
   "San Diego CA",
   "Loma Linda CA",
@@ -32,6 +34,7 @@ export const OTHER_CITIES = [
   "Kunming China",
   "Hainan China",
   "Taipei Taiwan",
+  "Uae Guinea-Bissau",
 ];
 
 export const ALL_CITIES = [...FOCUSED_CITIES, ...OTHER_CITIES];
@@ -43,9 +46,13 @@ export const cityChinese: Record<string, string> = {
   "Atlanta": "亚特兰大",
   "St. Paul": "圣保罗",
   "St Paul": "圣保罗",
+  "Saint Paul": "圣保罗",
+  "St.Paul": "圣保罗",
   "Miami": "迈阿密",
   "San Diego": "圣地亚哥",
   "Loma Linda": "洛马林达",
+  "San Jose": "圣何塞",
+  "Davis": "戴维斯",
   "New York": "纽约",
   "Los Angeles": "洛杉矶",
   "London": "伦敦",
@@ -68,6 +75,7 @@ export const cityChinese: Record<string, string> = {
   "Kunming": "昆明",
   "Hainan": "海南",
   "Taipei": "台北",
+  "Uae": "乌埃",
 };
 
 export const getCityChinese = (englishName: string): string => {
