@@ -18,7 +18,7 @@ export const OTHER_CITIES = [
   "Tokyo Japan",
   "Paris France",
   "Sydney Australia",
-  "Dubai UAE",
+  "Dubai",
   "Singapore",
   "Mumbai India",
   "Toronto Canada",
@@ -34,7 +34,6 @@ export const OTHER_CITIES = [
   "Kunming China",
   "Hainan China",
   "Taipei Taiwan",
-  "Uae Guinea-Bissau",
 ];
 
 export const ALL_CITIES = [...FOCUSED_CITIES, ...OTHER_CITIES];
@@ -75,7 +74,6 @@ export const cityChinese: Record<string, string> = {
   "Kunming": "昆明",
   "Hainan": "海南",
   "Taipei": "台北",
-  "Uae": "乌埃",
 };
 
 export const getCityChinese = (englishName: string): string => {
