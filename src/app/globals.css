@@ -437,11 +437,20 @@ body::after {
 
   .tab-container {
     margin-bottom: 16px;
+    width: 100%;
+    max-width: 480px;
+    border-radius: var(--border-radius-lg);
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px;
   }
 
   .glass-button {
-    padding: 8px 14px;
+    padding: 8px 16px;
     font-size: 0.75rem;
+    flex: 1 1 auto;
+    text-align: center;
+    border-radius: var(--border-radius-md);
   }
 
   .city-grid {
