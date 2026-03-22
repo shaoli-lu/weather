@@ -19,12 +19,14 @@ const LiveClock = () => {
   const formatParts = () => {
     const hhmmss = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
     const [timeStr, period] = hhmmss.split(' ');
-    return { timeStr, period };
+    // Get timezone abbreviation
+    const tz = Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(time).find(p => p.type === 'timeZoneName')?.value || '';
+    return { timeStr, period, tz };
   };
 
   if (!mounted) return <div style={{ minHeight: '64px' }}></div>;
 
-  const { timeStr, period } = formatParts();
+  const { timeStr, period, tz } = formatParts();
 
   return (
     <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', pointerEvents: 'none' }}>
@@ -51,6 +53,14 @@ const LiveClock = () => {
           }}>
             {period}
           </span>
+          {tz && <span style={{ 
+            fontSize: '0.75rem', 
+            fontWeight: 750, 
+            color: 'var(--accent)', 
+            marginLeft: '4px', 
+            opacity: 0.9, 
+            letterSpacing: '0.05em' 
+          }}>{tz}</span>}
         </div>
       </div>
       <span style={{
