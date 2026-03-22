@@ -67,11 +67,14 @@ const LiveClock = () => {
         fontSize: '0.65rem', fontWeight: 600,
         color: 'var(--text-muted)',
         textTransform: 'uppercase',
-        letterSpacing: '0.3em',
+        letterSpacing: '0.2em',
         marginTop: '4px',
         opacity: 0.7
       }}>
-        {time.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+        {time.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+        <span style={{ marginLeft: '8px', color: 'var(--accent)', opacity: 0.8 }}>
+          {time.toLocaleDateString('zh-CN', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+        </span>
       </span>
     </div>
   );
@@ -146,10 +149,10 @@ export default function Home() {
   };
 
   const tabs = [
-    { id: 'cities', label: '🌍 Cities', emoji: '🌍' },
-    { id: 'hot', label: '🔥 Hot', emoji: '🔥' },
-    { id: 'cool', label: '❄️ Cool', emoji: '❄️' },
-    { id: 'slideshow', label: '▶ Slideshow', emoji: '▶' }
+    { id: 'cities', label: '🌍 Cities 城市', emoji: '🌍' },
+    { id: 'hot', label: '🔥 Hot 高温', emoji: '🔥' },
+    { id: 'cool', label: '❄️ Cool 凉爽', emoji: '❄️' },
+    { id: 'slideshow', label: '▶ Slideshow 幻灯片', emoji: '▶' }
   ];
 
   return (
@@ -240,7 +243,7 @@ export default function Home() {
               textTransform: 'uppercase',
               marginTop: '4px',
               opacity: 0.6
-            }}>Appreciate every horizon</p>
+            }}>Appreciate every horizon / 悦览每刻天际</p>
           </div>
 
           {/* LIVE CLOCK: Center */}
@@ -257,7 +260,7 @@ export default function Home() {
                 </div>
                 <input
                   type="text"
-                  placeholder="Search cities..."
+                  placeholder="Search cities / 搜索城市..."
                   className="glass-input"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -318,7 +321,7 @@ export default function Home() {
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase'
               }}>
-                Gathering the horizon...
+                Gathering the horizon / 正在览集天际...
               </p>
             </div>
           ) : (
@@ -346,7 +349,7 @@ export default function Home() {
             fontWeight: 500,
             letterSpacing: '0.1em'
           }}>
-            © 2026 SunRise • Atmosphere Weather
+            © 2026 SunRise • Atmosphere Weather 气象天气
           </p>
         </footer>
       </main>

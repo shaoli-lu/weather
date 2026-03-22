@@ -42,7 +42,7 @@ export default function CityList({ data, type }: CityListProps) {
         borderStyle: 'dashed'
       }}>
         <p style={{ color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.85rem' }}>
-          No horizons found
+          No horizons found / 未发现任何数据
         </p>
       </div>
     );
@@ -79,7 +79,7 @@ export default function CityList({ data, type }: CityListProps) {
                     {city.sunrise}
                   </span>
                   <span style={{ fontSize: '0.58rem', fontWeight: 600, color: 'var(--accent)', opacity: 0.8 }}>
-                    Watch: {city.sunriseAction}
+                    Watch / 观看: {city.sunriseAction}
                   </span>
                 </div>
               </div>
@@ -89,7 +89,7 @@ export default function CityList({ data, type }: CityListProps) {
                     {city.sunset}
                   </span>
                   <span style={{ fontSize: '0.58rem', fontWeight: 600, color: 'var(--accent-secondary)', opacity: 0.8 }}>
-                    Watch: {city.sunsetAction}
+                    Watch / 观看: {city.sunsetAction}
                   </span>
                 </div>
                 <SunsetIcon />
@@ -156,12 +156,12 @@ export default function CityList({ data, type }: CityListProps) {
               borderBottom: '1px solid rgba(255,255,255,0.04)',
             }}>
               {[
-                { label: 'UV Index', value: `${city.uv}`, desc: getUVDescription(city.uv) },
-                { label: 'Humidity', value: `${city.humidity}%`, desc: null },
-                { label: 'Pressure', value: `${city.pressure_mb} mb`, desc: getPressureDescription(city.pressure_mb) },
-                { label: 'Visibility', value: `${city.vis_km} km`, desc: getVisibilityDescription(city.vis_km) },
-                { label: 'EPA Index', value: `${city.aqi}`, desc: getAQIDescription(city.aqi) },
-                { label: 'Daylight', value: city.sun_hours, desc: null },
+                { label: 'UV Index / 紫外线指数', value: `${city.uv}`, desc: getUVDescription(city.uv) },
+                { label: 'Humidity / 湿度', value: `${city.humidity}%`, desc: null },
+                { label: 'Pressure / 气压', value: `${city.pressure_mb} mb`, desc: getPressureDescription(city.pressure_mb) },
+                { label: 'Visibility / 能见度', value: `${city.vis_km} km`, desc: getVisibilityDescription(city.vis_km) },
+                { label: 'EPA Index / 空气质量', value: `${city.aqi}`, desc: getAQIDescription(city.aqi) },
+                { label: 'Daylight / 日照', value: city.sun_hours, desc: null },
               ].map((item, i) => (
                 <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                   <span className="detail-label">{item.label}</span>

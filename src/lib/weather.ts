@@ -71,31 +71,31 @@ const calculateSunHours = (sunrise: string, sunset: string): string => {
 };
 
 export const getUVDescription = (uv: number): string => {
-  if (uv <= 2) return "Low";
-  if (uv <= 6) return "Medium";
-  return "High";
+  if (uv <= 2) return "Low / 弱";
+  if (uv <= 6) return "Medium / 中";
+  return "High / 强";
 };
 
 export const getPressureDescription = (mb: number): string => {
-  if (mb < 1000) return "Low";
-  if (mb <= 1020) return "Medium";
-  return "High";
+  if (mb < 1000) return "Low / 低";
+  if (mb <= 1020) return "Normal / 正常";
+  return "High / 高";
 };
 
 export const getVisibilityDescription = (km: number): string => {
-  if (km < 5) return "Low";
-  if (km <= 10) return "Medium";
-  return "High";
+  if (km < 5) return "Low / 差";
+  if (km <= 10) return "Medium / 中";
+  return "Good / 优";
 };
 
 export const getAQIDescription = (aqi: number): string => {
-  if (aqi <= 1) return "Good";
-  if (aqi === 2) return "Moderate";
-  if (aqi === 3) return "Unhealthy for Sensitive Groups";
-  if (aqi === 4) return "Unhealthy";
-  if (aqi === 5) return "Very Unhealthy";
-  if (aqi >= 6) return "Hazardous";
-  return "Unknown";
+  if (aqi <= 1) return "Good / 优";
+  if (aqi === 2) return "Moderate / 良";
+  if (aqi === 3) return "Sensitive Groups / 敏感人群不适";
+  if (aqi === 4) return "Unhealthy / 不健康";
+  if (aqi === 5) return "Very Unhealthy / 非常不健康";
+  if (aqi >= 6) return "Hazardous / 危险";
+  return "Unknown / 未知";
 };
 
 export const moonPhaseChinese: Record<string, string> = {

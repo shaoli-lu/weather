@@ -39,7 +39,7 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
     return (
       <div className="glass-panel" style={{ textAlign: 'center', padding: '80px 24px' }}>
         <p style={{ color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.85rem' }}>
-          Searching for the sun...
+          Searching for the sun / 正在寻找太阳...
         </p>
       </div>
     );
@@ -87,20 +87,20 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
             <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
-              ☀️ Sunrise
+              ☀️ Sunrise / 日出
             </span>
             <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--accent)' }}>{city.sunrise}</span>
             <span style={{ fontSize: '0.6rem', fontWeight: 600, color: 'var(--text-muted)', opacity: 0.7 }}>
-              Watch at: {city.sunriseAction}
+              Watch / 观看: {city.sunriseAction}
             </span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
             <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
-              🌅 Sunset
+              🌅 Sunset / 日落
             </span>
             <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--accent-secondary)' }}>{city.sunset}</span>
             <span style={{ fontSize: '0.6rem', fontWeight: 600, color: 'var(--text-muted)', opacity: 0.7 }}>
-              Watch at: {city.sunsetAction}
+              Watch / 观看: {city.sunsetAction}
             </span>
           </div>
         </div>
@@ -200,12 +200,12 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
             zIndex: 1
           }}>
             {[
-              { label: 'UV Index', value: `${city.uv}`, desc: getUVDescription(city.uv) },
-              { label: 'Humidity', value: `${city.humidity}%`, desc: null },
-              { label: 'Pressure', value: `${city.pressure_mb} mb`, desc: getPressureDescription(city.pressure_mb) },
-              { label: 'Visibility', value: `${city.vis_km} km`, desc: getVisibilityDescription(city.vis_km) },
-              { label: 'AQI (EPA)', value: `${city.aqi}`, desc: getAQIDescription(city.aqi) },
-              { label: 'Daylight', value: city.sun_hours, desc: null },
+              { label: 'UV Index / 紫外线指数', value: `${city.uv}`, desc: getUVDescription(city.uv) },
+              { label: 'Humidity / 湿度', value: `${city.humidity}%`, desc: null },
+              { label: 'Pressure / 气压', value: `${city.pressure_mb} mb`, desc: getPressureDescription(city.pressure_mb) },
+              { label: 'Visibility / 能见度', value: `${city.vis_km} km`, desc: getVisibilityDescription(city.vis_km) },
+              { label: 'AQI (EPA) / 空气质量', value: `${city.aqi}`, desc: getAQIDescription(city.aqi) },
+              { label: 'Daylight / 日照', value: city.sun_hours, desc: null },
             ].map((item, i) => (
               <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
                 <span style={{
@@ -241,7 +241,7 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
               textTransform: 'uppercase',
               letterSpacing: '0.2em'
             }}>
-              🌙 Moon Phase
+              🌙 Moon Phase / 月相
             </span>
             <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>
               {city.moon_phase}
@@ -288,7 +288,7 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
           color: isPaused ? 'var(--accent-warm)' : 'var(--text-muted)'
         }}>
           <div className={`status-dot ${isPaused ? 'paused' : 'live'}`} />
-          {isPaused ? 'PAUSED' : 'LIVE'}
+          {isPaused ? 'PAUSED / 已暂停' : 'LIVE / 正在直播'}
         </div>
       </div>
 
