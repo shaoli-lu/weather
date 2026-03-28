@@ -34,6 +34,25 @@ export const OTHER_CITIES = [
   "Kunming China",
   "Hainan China",
   "Taipei Taiwan",
+
+  // USA
+  "Minneapolis MN",
+  "Sarasota FL",
+  "Orlando FL",
+  "Las Vegas NV",
+  "Tucson AZ",
+  "Houston TX",
+  "Dallas TX",
+  "Charlotte NC",
+  "Washington DC",
+  "Seattle WA",
+
+  // International
+  "Vancouver Canada",
+  "San Jose Costa Rica",
+  "Wellington New Zealand",
+  "Bahamas",
+  "Cayman Islands",
 ];
 
 export const ALL_CITIES = [...FOCUSED_CITIES, ...OTHER_CITIES];
@@ -74,6 +93,23 @@ export const cityChinese: Record<string, string> = {
   "Kunming": "昆明",
   "Hainan": "海南",
   "Taipei": "台北",
+
+  // Additions (countries removed)
+  "Minneapolis": "明尼阿波利斯",
+  "Sarasota": "萨拉索塔",
+  "Orlando": "奥兰多",
+  "Las Vegas": "拉斯维加斯",
+  "Tucson": "图森",
+  "Houston": "休斯顿",
+  "Dallas": "达拉斯",
+  "Charlotte": "夏洛特",
+  "Washington": "华盛顿哥伦比亚特区",
+  "Seattle": "西雅图",
+  "Vancouver": "温哥华",
+  "Wellington": "惠灵顿",
+  "Nassau": "拿骚",
+  "George Town": "乔治敦",
+
 };
 
 export const getCityChinese = (englishName: string): string => {

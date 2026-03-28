@@ -53,13 +53,13 @@ const LiveClock = () => {
           }}>
             {period}
           </span>
-          {tz && <span style={{ 
-            fontSize: '0.75rem', 
-            fontWeight: 750, 
-            color: 'var(--accent)', 
-            marginLeft: '4px', 
-            opacity: 0.9, 
-            letterSpacing: '0.05em' 
+          {tz && <span style={{
+            fontSize: '0.75rem',
+            fontWeight: 750,
+            color: 'var(--accent)',
+            marginLeft: '4px',
+            opacity: 0.9,
+            letterSpacing: '0.05em'
           }}>{tz}</span>}
         </div>
       </div>
