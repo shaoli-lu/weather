@@ -9,6 +9,7 @@ export const FOCUSED_CITIES = [
   "Miami FL",
   "San Diego CA",
   "Loma Linda CA",
+  "Honolulu HI",
 ];
 
 export const OTHER_CITIES = [
@@ -109,6 +110,7 @@ export const cityChinese: Record<string, string> = {
   "Wellington": "惠灵顿",
   "Nassau": "拿骚",
   "George Town": "乔治敦",
+  "Honolulu": "檀香山",
 
 };
 
