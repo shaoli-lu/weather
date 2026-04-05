@@ -5,6 +5,7 @@ import { ALL_CITIES, FOCUSED_CITIES } from '@/lib/cities';
 import { fetchWeather, WeatherData } from '@/lib/weather';
 import Slideshow from '@/components/Slideshow';
 import CityList from '@/components/CityList';
+import HelpModal from '@/components/HelpModal';
 
 const LiveClock = () => {
   const [time, setTime] = useState(new Date());
@@ -103,6 +104,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'slideshow' | 'cities' | 'hot' | 'cool'>('cities');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -243,7 +245,7 @@ export default function Home() {
               textTransform: 'uppercase',
               marginTop: '4px',
               opacity: 0.6
-            }}>Appreciate every horizon / 悦览每刻天际</p>
+            }}>Natural Red Light Therapy / 自然红光健康</p>
           </div>
 
           {/* LIVE CLOCK: Center */}
@@ -251,8 +253,12 @@ export default function Home() {
             <LiveClock />
           </div>
 
-          {/* SEARCHBOX: Right */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          {/* SEARCHBOX & HELP: Right */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '16px' }}>
+            <button onClick={() => setIsHelpOpen(true)} className="help-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+              Help
+            </button>
             <div className="search-container" style={{ width: '100%', maxWidth: '280px' }}>
               <div className="search-wrapper" style={{ maxWidth: '100%' }}>
                 <div className="search-icon">
@@ -353,6 +359,7 @@ export default function Home() {
           </p>
         </footer>
       </main>
+      <HelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
     </>
   );
 }
