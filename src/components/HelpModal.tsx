@@ -27,10 +27,10 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
             WebkitTextFillColor: 'transparent',
             letterSpacing: '-0.02em'
           }}>
-            Chase the Red, Save the Green 🌅
+            SunRise & SunSet Guide 🌅
           </h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>
-            Why drop $1000 on a red light lamp when nature does it for free? SunRise helps you hunt the perfect horizon for that sweet, healing solar glow.
+            Track the perfect moments for your solar rituals. SunRise helps you plan your day around the most beautiful transitions of light and temperature.
           </p>
         </div>
 
@@ -44,9 +44,9 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
               <span style={{ fontSize: '1rem' }}>🌇</span>
             </div>
             <div>
-              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '2px' }}>The Red Light Hunt</h4>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '2px' }}>Solar Tracking</h4>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                Browse cities to find the perfect atmospheric conditions. Too much smog? That's just nature's "soft filter" for maximum red light therapy.
+                View precise Sun Rise and Sun Set times for every city in your selected list, updated in real-time.
               </p>
             </div>
           </div>
@@ -57,12 +57,12 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
               background: 'rgba(249, 115, 22, 0.1)', display: 'flex', 
               alignItems: 'center', justifyContent: 'center', flexShrink: 0 
             }}>
-              <span style={{ fontSize: '1rem' }}>💡</span>
+              <span style={{ fontSize: '1rem' }}>⏱️</span>
             </div>
             <div>
-              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '2px' }}>Nature vs. Tech</h4>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '2px' }}>Preparation Time</h4>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                The "Hot" tab shows where the sun is literally screaming at you to come outside. Your LED panel in the bedroom could never. 
+                We recommend starting your journey 30 minutes prior to the event to allow for preparation and walking to your viewing spot.
               </p>
             </div>
           </div>
@@ -70,15 +70,15 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
           <div style={{ display: 'flex', gap: '12px' }}>
             <div style={{ 
               width: '32px', height: '32px', borderRadius: '8px', 
-              background: 'rgba(168, 85, 247, 0.1)', display: 'flex', 
+              background: 'rgba(255, 65, 54, 0.1)', display: 'flex', 
               alignItems: 'center', justifyContent: 'center', flexShrink: 0 
             }}>
-              <span style={{ fontSize: '1rem' }}>🧊</span>
+              <span style={{ fontSize: '1rem' }}>🔥</span>
             </div>
             <div>
-              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '2px' }}>Cooling Down</h4>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '2px' }}>Hot & Cold Tabs</h4>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                The "Cool" tab is for when you've had too much of a good thing. (Also known as: "I am becoming a lobster").
+                Quickly access the warmest and coolest cities among your selected list for instant climate comparisons.
               </p>
             </div>
           </div>
@@ -89,12 +89,12 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
               background: 'rgba(0, 212, 255, 0.1)', display: 'flex', 
               alignItems: 'center', justifyContent: 'center', flexShrink: 0 
             }}>
-              <span style={{ fontSize: '1rem' }}>🧘</span>
+              <span style={{ fontSize: '1rem' }}>💻</span>
             </div>
             <div>
-              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '2px' }}>Zen State</h4>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '2px' }}>Interactive View</h4>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                Use Slideshow mode to mentally transport yourself to a location where health is free and the sunsets are actually red.
+                Use the Slideshow mode to cycle through your cities and visualize the weather across different global regions.
               </p>
             </div>
           </div>
@@ -108,8 +108,8 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
           border: '1px solid rgba(255, 255, 255, 0.05)'
         }}>
           <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic', textAlign: 'center' }}>
-            "Stop buying lamps. Start chasing horizons." 
-            <br />— The SunRise Wellness Squad 🧘‍♀️✨
+            "The best view comes after the hardest walk." 
+            <br />— SunRise Weather Explorer 🧘‍♀️✨
           </p>
         </div>
       </div>
