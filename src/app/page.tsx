@@ -6,6 +6,9 @@ import { fetchWeather, WeatherData } from '@/lib/weather';
 import Slideshow from '@/components/Slideshow';
 import CityList from '@/components/CityList';
 import HelpModal from '@/components/HelpModal';
+import SightingsTab from '@/components/SightingsTab';
+import SubmitSighting from '@/components/SubmitSighting';
+import ModerateSightings from '@/components/ModerateSightings';
 
 const LiveClock = () => {
   const [time, setTime] = useState(new Date());
@@ -102,7 +105,7 @@ const BackgroundOrbs = () => (
 export default function Home() {
   const [data, setData] = useState<WeatherData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'slideshow' | 'cities' | 'hot' | 'cool'>('cities');
+  const [activeTab, setActiveTab] = useState<'slideshow' | 'cities' | 'hot' | 'cool' | 'sightings' | 'submit' | 'moderate'>('cities');
   const [searchQuery, setSearchQuery] = useState('');
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -154,7 +157,10 @@ export default function Home() {
     { id: 'cities', label: '🌍 Cities 城市', emoji: '🌍' },
     { id: 'hot', label: '🔥 Hot 高温', emoji: '🔥' },
     { id: 'cool', label: '❄️ Cool 凉爽', emoji: '❄️' },
-    { id: 'slideshow', label: '▶ Slideshow 幻灯片', emoji: '▶' }
+    { id: 'slideshow', label: '▶ Slideshow 幻灯片', emoji: '▶' },
+    { id: 'sightings', label: '🌅 Sightings 社区', emoji: '🌅' },
+    { id: 'submit', label: '📤 Submit 发布', emoji: '📤' },
+    { id: 'moderate', label: '🛡️ Moderate 审核', emoji: '🛡️' }
   ];
 
   return (
@@ -333,10 +339,19 @@ export default function Home() {
           ) : (
             <div style={{ width: '100%', flex: 1 }}>
               {activeTab === 'slideshow' && (
-                <Slideshow data={getSortedData('cities')} />
+                <Slideshow data={getSortedData('cities' as any)} />
               )}
-              {activeTab !== 'slideshow' && (
-                <CityList data={getSortedData(activeTab)} type={activeTab} />
+              {(activeTab === 'cities' || activeTab === 'hot' || activeTab === 'cool') && (
+                <CityList data={getSortedData(activeTab as any)} type={activeTab as any} />
+              )}
+              {activeTab === 'sightings' && (
+                <SightingsTab />
+              )}
+              {activeTab === 'submit' && (
+                <SubmitSighting onSuccess={() => setActiveTab('sightings')} />
+              )}
+              {activeTab === 'moderate' && (
+                <ModerateSightings />
               )}
             </div>
           )}
