@@ -98,6 +98,38 @@ const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
               </p>
             </div>
           </div>
+
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <div style={{ 
+              width: '32px', height: '32px', borderRadius: '8px', 
+              background: 'rgba(168, 85, 247, 0.1)', display: 'flex', 
+              alignItems: 'center', justifyContent: 'center', flexShrink: 0 
+            }}>
+              <span style={{ fontSize: '1rem' }}>🌅</span>
+            </div>
+            <div>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '2px' }}>Community Sightings</h4>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                Discover beautiful horizon moments shared by others. Upvote your favorites and join the conversation in the comments!
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <div style={{ 
+              width: '32px', height: '32px', borderRadius: '8px', 
+              background: 'rgba(34, 197, 94, 0.1)', display: 'flex', 
+              alignItems: 'center', justifyContent: 'center', flexShrink: 0 
+            }}>
+              <span style={{ fontSize: '1rem' }}>📤</span>
+            </div>
+            <div>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '2px' }}>Share Your View</h4>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                Post your own photos and video links to the community. Images are automatically optimized for fast global sharing.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div style={{ 
