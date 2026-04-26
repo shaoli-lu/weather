@@ -39,7 +39,8 @@ function isVideoUrl(url: string) {
 }
 
 function getEmbedUrl(url: string): string | null {
-  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/);
+  // Support standard watch, youtu.be, and shorts
+  const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([^&?/]+)/);
   if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
   const vm = url.match(/vimeo\.com\/(\d+)/);
   if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
