@@ -67,19 +67,24 @@ const LiveClock = () => {
           }}>{tz}</span>}
         </div>
       </div>
-      <span style={{
+      <div style={{
         fontSize: '0.65rem', fontWeight: 600,
         color: 'var(--text-muted)',
         textTransform: 'uppercase',
         letterSpacing: '0.2em',
         marginTop: '4px',
-        opacity: 0.7
+        opacity: 0.7,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '2px',
+        textAlign: 'center'
       }}>
-        {time.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
-        <span style={{ marginLeft: '8px', color: 'var(--accent)', opacity: 0.8 }}>
+        <span>{time.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</span>
+        <span style={{ color: 'var(--accent)', opacity: 0.8, marginLeft: 0 }}>
           {time.toLocaleDateString('zh-CN', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
         </span>
-      </span>
+      </div>
     </div>
   );
 };
@@ -105,7 +110,7 @@ const BackgroundOrbs = () => (
 export default function Home() {
   const [data, setData] = useState<WeatherData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'slideshow' | 'cities' | 'hot' | 'cool' | 'sightings' | 'submit' | 'moderate'>('cities');
+  const [activeTab, setActiveTab] = useState<'slideshow' | 'cities' | 'hot' | 'cool' | 'sightings' | 'submit' | 'moderate'>('sightings');
   const [searchQuery, setSearchQuery] = useState('');
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -154,12 +159,12 @@ export default function Home() {
   };
 
   const tabs = [
-    { id: 'cities', label: '🌍 Cities 城市', emoji: '🌍' },
-    { id: 'hot', label: '🔥 Hot 高温', emoji: '🔥' },
-    { id: 'cool', label: '❄️ Cool 凉爽', emoji: '❄️' },
-    { id: 'slideshow', label: '▶ Slideshow 幻灯片', emoji: '▶' },
     { id: 'sightings', label: '🌅 Sightings 社区', emoji: '🌅' },
     { id: 'submit', label: '📤 Submit 发布', emoji: '📤' },
+    { id: 'cities', label: '🌍 Cities 城市', emoji: '🌍' },
+    { id: 'slideshow', label: '▶ Slideshow 幻灯片', emoji: '▶' },
+    { id: 'hot', label: '🔥 Hot 高温', emoji: '🔥' },
+    { id: 'cool', label: '❄️ Cool 凉爽', emoji: '❄️' },
     { id: 'moderate', label: '🛡️ Moderate 审核', emoji: '🛡️' }
   ];
 
@@ -250,7 +255,9 @@ export default function Home() {
               letterSpacing: '0.15em',
               textTransform: 'uppercase',
               marginTop: '4px',
-              opacity: 0.6
+              opacity: 0.6,
+              textAlign: 'center',
+              whiteSpace: 'normal'
             }}>Natural Red Light Therapy / 自然红光健康</p>
           </div>
 
@@ -259,12 +266,8 @@ export default function Home() {
             <LiveClock />
           </div>
 
-          {/* SEARCHBOX & HELP: Right */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '16px' }}>
-            <button onClick={() => setIsHelpOpen(true)} className="help-link">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-              Help
-            </button>
+          {/* SEARCHBOX: Right */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
             <div className="search-container" style={{ width: '100%', maxWidth: '280px' }}>
               <div className="search-wrapper" style={{ maxWidth: '100%' }}>
                 <div className="search-icon">
@@ -374,6 +377,9 @@ export default function Home() {
           </p>
         </footer>
       </main>
+      <button onClick={() => setIsHelpOpen(true)} className="help-fab" aria-label="Help">
+        ❓
+      </button>
       <HelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
     </>
   );

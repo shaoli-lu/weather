@@ -33,6 +33,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -41,6 +43,7 @@ body {
   color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
+  max-width: 100%;
   position: relative;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -144,17 +147,25 @@ body::after {
    ======================================== */
 .tab-container {
   display: flex;
-  gap: 4px;
-  justify-content: center;
+  gap: 8px;
+  justify-content: flex-start;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   border-radius: var(--border-radius-pill);
-  padding: 5px;
-  width: fit-content;
+  padding: 8px;
+  width: 100%;
+  max-width: max-content;
   margin: 0 auto 20px auto;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tab-container::-webkit-scrollbar {
+  display: none;
 }
 
 .glass-button {
@@ -438,17 +449,20 @@ body::after {
   .tab-container {
     margin-bottom: 16px;
     width: 100%;
-    max-width: 480px;
+    max-width: 100%;
     border-radius: var(--border-radius-lg);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 8px;
     padding: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
   }
 
   .glass-button {
     padding: 8px 16px;
     font-size: 0.75rem;
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     text-align: center;
     border-radius: var(--border-radius-md);
   }
@@ -540,30 +554,33 @@ body::after {
   }
 }
 
-.help-link {
-  background: transparent;
-  outline: none;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 8px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: var(--border-radius-pill);
-  transition: all 0.3s ease;
-  cursor: pointer;
+.help-fab {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(10, 10, 26, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #fff;
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  z-index: 900;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.help-link:hover {
-  color: var(--accent);
-  border-color: var(--accent-glow);
-  background: rgba(0, 212, 255, 0.04);
-  box-shadow: 0 0 15px var(--accent-glow);
+.help-fab:hover {
+  transform: scale(1.1) translateY(-4px);
+  box-shadow: 0 8px 32px var(--accent-glow), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  border-color: rgba(0, 212, 255, 0.3);
+  background: rgba(0, 212, 255, 0.1);
 }
 
 @keyframes modal-fade-in {
@@ -579,6 +596,13 @@ body::after {
 @media (max-width: 480px) {
   .modal-content {
     padding: 24px;
+  }
+  .help-fab {
+    bottom: 24px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
   }
 }
 
