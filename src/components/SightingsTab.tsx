@@ -267,7 +267,7 @@ function SightingCard({ s, onVote }: { s: Sighting; onVote: (id: number, dir: 'u
 
 // ── Main SightingsTab ─────────────────────────────────────────────────────────
 export default function SightingsTab() {
-  const [subTab, setSubTab] = useState<'hot' | 'new' | 'top'>('hot');
+  const [subTab, setSubTab] = useState<'hot' | 'new' | 'top'>('new');
   const [sightings, setSightings] = useState<Sighting[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -297,8 +297,8 @@ export default function SightingsTab() {
   };
 
   const subTabs = [
-    { id: 'hot', label: '🔥 Hot', desc: 'Most popular' },
     { id: 'new', label: '✨ New', desc: 'Latest submissions' },
+    { id: 'hot', label: '🔥 Hot', desc: 'Most popular' },
     { id: 'top', label: '🏆 Top', desc: 'All-time best' },
   ];
 
