@@ -41,9 +41,9 @@ function isVideoUrl(url: string) {
 function getEmbedUrl(url: string): string | null {
   // Support standard watch, youtu.be, and shorts
   const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([^&?/]+)/);
-  if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}?loop=1&playlist=${yt[1]}`;
   const vm = url.match(/vimeo\.com\/(\d+)/);
-  if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}?loop=1`;
   return null;
 }
 
@@ -117,6 +117,7 @@ function SightingCard({ s, onVote }: { s: Sighting; onVote: (id: number, dir: 'u
           <video
             src={s.media_url}
             controls
+            loop
             style={{ width: '100%', maxHeight: '280px', display: 'block' }}
           />
         )}
