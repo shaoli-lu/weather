@@ -9,6 +9,7 @@ import HelpModal from '@/components/HelpModal';
 import SightingsTab from '@/components/SightingsTab';
 import SubmitSighting from '@/components/SubmitSighting';
 import ModerateSightings from '@/components/ModerateSightings';
+import { formatTimeParts, formatLocalDate, formatChineseDate } from '@/lib/timeUtils';
 
 const LiveClock = () => {
   const [time, setTime] = useState(new Date());
@@ -20,17 +21,9 @@ const LiveClock = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const formatParts = () => {
-    const hhmmss = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-    const [timeStr, period] = hhmmss.split(' ');
-    // Get timezone abbreviation
-    const tz = Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(time).find(p => p.type === 'timeZoneName')?.value || '';
-    return { timeStr, period, tz };
-  };
-
   if (!mounted) return <div style={{ minHeight: '64px' }}></div>;
 
-  const { timeStr, period, tz } = formatParts();
+  const { timeStr, period, tz } = formatTimeParts(time);
 
   return (
     <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', pointerEvents: 'none' }}>
@@ -80,9 +73,9 @@ const LiveClock = () => {
         gap: '2px',
         textAlign: 'center'
       }}>
-        <span>{time.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</span>
+        <span>{formatLocalDate(time)}</span>
         <span style={{ color: 'var(--accent)', opacity: 0.8, marginLeft: 0 }}>
-          {time.toLocaleDateString('zh-CN', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+          {formatChineseDate(time)}
         </span>
       </div>
     </div>
