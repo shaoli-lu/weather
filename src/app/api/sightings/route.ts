@@ -10,6 +10,8 @@ const supabase = createClient(
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const sort = searchParams.get('sort') || 'new';
+  const page = Math.max(0, parseInt(searchParams.get('page') || '0', 10));
+  const limit = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') || '10', 10)));
 
   let query = supabase
     .from('sightings')
@@ -25,9 +27,14 @@ export async function GET(req: NextRequest) {
     query = query.order('upvotes', { ascending: false }).order('submitted_at', { ascending: false });
   }
 
-  const { data, error } = await query.limit(100);
+  // Fetch one extra to determine if more pages exist
+  const from = page * limit;
+  const { data, error } = await query.range(from, from + limit);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data);
+
+  const hasMore = (data?.length ?? 0) > limit;
+  const items = hasMore ? data!.slice(0, limit) : (data ?? []);
+  return NextResponse.json({ data: items, hasMore });
 }
 
 // POST: submit a new sighting (auto-approved by default)
