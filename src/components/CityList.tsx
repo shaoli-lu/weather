@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese, getMoonPhaseEmoji } from '@/lib/weather';
-import { getCityChinese } from '@/lib/cities';
+import { getCityChinese, getCityMetadata } from '@/lib/cities';
 import { formatTimeParts } from '@/lib/timeUtils';
 
 interface CityListProps {
@@ -170,6 +170,7 @@ export default function CityList({ data, type }: CityListProps) {
     <div className="city-grid">
       {data.map((city, index) => {
         const tempColor = getTempColor(city.temp_f);
+        const metadata = getCityMetadata(city.queryCity);
 
         return (
           <div
@@ -294,6 +295,48 @@ export default function CityList({ data, type }: CityListProps) {
                 }}>
                   {city.temp_c.toFixed(1)}°C
                 </span>
+              </div>
+            </div>
+
+            {/* CHARACTERISTICS & LANGUAGES */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+              padding: '12px 14px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, rgba(0, 212, 255, 0.02) 0%, rgba(168, 85, 247, 0.02) 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.7rem' }}>
+                <span style={{
+                  fontSize: '0.58rem', fontWeight: 700,
+                  color: 'var(--text-muted)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  whiteSpace: 'nowrap'
+                }}>🗣 Language / 语言</span>
+                <span style={{
+                  color: 'var(--text-secondary)',
+                  fontWeight: 600,
+                  fontSize: '0.68rem'
+                }}>{metadata.languages}</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.7rem', lineHeight: 1.45 }}>
+                <span style={{
+                  fontSize: '0.58rem', fontWeight: 700,
+                  color: 'var(--text-muted)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  whiteSpace: 'nowrap',
+                  paddingTop: '1px'
+                }}>✨ Highlights / 特色</span>
+                <span style={{
+                  color: 'var(--accent)',
+                  fontWeight: 600,
+                  fontSize: '0.68rem',
+                  opacity: 0.9
+                }}>{metadata.characteristics}</span>
               </div>
             </div>
 

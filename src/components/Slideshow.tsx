@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese, getMoonPhaseEmoji } from '@/lib/weather';
-import { getCityChinese } from '@/lib/cities';
+import { getCityChinese, getCityMetadata } from '@/lib/cities';
 import { CityClock } from './CityList';
 
 const getTempColor = (temp_f: number): string => {
@@ -49,6 +49,7 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
   const safeIndex = currentIndex >= data.length ? 0 : currentIndex;
   const city = data[safeIndex];
   const tempColor = getTempColor(city.temp_f);
+  const metadata = getCityMetadata(city.queryCity);
 
   return (
     <div
@@ -226,6 +227,51 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
             }}>
               / {city.temp_c.toFixed(1)}°C
             </span>
+          </div>
+
+          {/* CHARACTERISTICS & LANGUAGES */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            width: '100%',
+            maxWidth: '540px',
+            padding: '16px 20px',
+            borderRadius: '16px',
+            background: 'linear-gradient(135deg, rgba(0, 212, 255, 0.03) 0%, rgba(168, 85, 247, 0.03) 100%)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            zIndex: 1
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
+              <span style={{
+                fontSize: '0.65rem', fontWeight: 700,
+                color: 'var(--text-muted)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em'
+              }}>🗣 Language / 语言</span>
+              <span style={{
+                fontSize: '0.85rem',
+                color: 'var(--text-secondary)',
+                fontWeight: 600
+              }}>{metadata.languages}</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', justifyContent: 'center', lineHeight: 1.5 }}>
+              <span style={{
+                fontSize: '0.65rem', fontWeight: 700,
+                color: 'var(--text-muted)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                whiteSpace: 'nowrap',
+                paddingTop: '2px'
+              }}>✨ Highlights / 特色</span>
+              <span style={{
+                fontSize: '0.85rem',
+                color: 'var(--accent)',
+                fontWeight: 600,
+                textAlign: 'center',
+                opacity: 0.9
+              }}>{metadata.characteristics}</span>
+            </div>
           </div>
 
           <div className="glass-divider" />
