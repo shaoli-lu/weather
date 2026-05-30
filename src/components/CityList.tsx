@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese } from '@/lib/weather';
+import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese, getMoonPhaseEmoji } from '@/lib/weather';
 import { getCityChinese } from '@/lib/cities';
 import { formatTimeParts } from '@/lib/timeUtils';
 
@@ -345,7 +345,7 @@ export default function CityList({ data, type }: CityListProps) {
                 fontSize: '0.62rem', fontWeight: 500,
                 color: 'var(--text-muted)', fontStyle: 'italic'
               }}>
-                🌙 {city.moon_phase}
+                {getMoonPhaseEmoji(city.moon_phase)} {city.moon_phase}
                 {getMoonPhaseChinese(city.moon_phase) && (
                   <span style={{ color: 'var(--accent)', marginLeft: '4px' }}>
                     {getMoonPhaseChinese(city.moon_phase)}

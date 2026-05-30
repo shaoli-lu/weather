@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese } from '@/lib/weather';
+import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese, getMoonPhaseEmoji } from '@/lib/weather';
 import { getCityChinese } from '@/lib/cities';
 import { CityClock } from './CityList';
 
@@ -281,10 +281,10 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
               textTransform: 'uppercase',
               letterSpacing: '0.2em'
             }}>
-              🌙 Moon Phase / 月相
+              {getMoonPhaseEmoji(city.moon_phase)} Moon Phase / 月相
             </span>
             <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-              {city.moon_phase}
+              {getMoonPhaseEmoji(city.moon_phase)} {city.moon_phase}
               {getMoonPhaseChinese(city.moon_phase) && (
                 <span style={{ color: 'var(--accent)', marginLeft: '8px', opacity: 0.8 }}>
                   {getMoonPhaseChinese(city.moon_phase)}

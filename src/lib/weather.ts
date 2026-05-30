@@ -114,6 +114,21 @@ export const getMoonPhaseChinese = (phase: string): string => {
   return moonPhaseChinese[phase] || "";
 };
 
+export const moonPhaseEmoji: Record<string, string> = {
+  "New Moon": "🌑",
+  "Waxing Crescent": "🌒",
+  "First Quarter": "🌓",
+  "Waxing Gibbous": "🌔",
+  "Full Moon": "🌕",
+  "Waning Gibbous": "🌖",
+  "Last Quarter": "🌗",
+  "Waning Crescent": "🌘",
+};
+
+export const getMoonPhaseEmoji = (phase: string): string => {
+  return moonPhaseEmoji[phase] || "🌙";
+};
+
 export const fetchWeather = async (city: string): Promise<WeatherData> => {
   try {
     const response = await fetch(
