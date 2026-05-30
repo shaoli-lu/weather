@@ -1,6 +1,7 @@
 export const FOCUSED_CITIES = [
   "Milwaukee WI",
   "Dublin Ireland",
+  "Brasilia Brazil",
   "Chicago IL",
   "Atlanta GA",
   "St.Paul MN",
@@ -61,6 +62,7 @@ export const ALL_CITIES = [...FOCUSED_CITIES, ...OTHER_CITIES];
 export const cityChinese: Record<string, string> = {
   "Milwaukee": "密尔沃基",
   "Dublin": "都柏林",
+  "Brasilia": "巴西利亚",
   "Chicago": "芝加哥",
   "Atlanta": "亚特兰大",
   "St. Paul": "圣保罗",

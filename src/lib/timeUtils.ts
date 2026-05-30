@@ -61,6 +61,7 @@ export const formatTimeParts = (date: Date, timeZone?: string) => {
       'Pacific/Auckland': 'New Zealand Standard Time',
       'America/Nassau': 'Eastern Standard Time',
       'America/Cayman': 'Eastern Standard Time',
+      'America/Sao_Paulo': 'Brasilia Standard Time',
     };
 
     if (timeZone && mapping[timeZone]) {
