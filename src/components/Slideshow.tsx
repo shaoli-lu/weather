@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese } from '@/lib/weather';
 import { getCityChinese } from '@/lib/cities';
+import { CityClock } from './CityList';
 
 const getTempColor = (temp_f: number): string => {
   if (temp_f >= 90) return '#ff6b35';
@@ -82,26 +83,63 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
       }}>
         {/* ASTRONOMY ROW */}
         <div style={{
-          display: 'flex', gap: '48px', justifyContent: 'center',
-          flexWrap: 'wrap', marginBottom: '24px'
+          display: 'flex',
+          gap: '16px',
+          justifyContent: 'center',
+          width: '100%',
+          maxWidth: '500px',
+          marginBottom: '24px'
         }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-            <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
-              ☀️ Sunrise / 日出
-            </span>
-            <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--accent)' }}>{city.sunrise}</span>
-            <span style={{ fontSize: '0.6rem', fontWeight: 600, color: 'var(--text-muted)', opacity: 0.7 }}>
-              Watch / 观看: {city.sunriseAction}
-            </span>
+          {/* Sunrise Card */}
+          <div className="glass-panel" style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '12px',
+            padding: '12px 20px',
+            background: 'linear-gradient(135deg, rgba(255, 170, 0, 0.06) 0%, rgba(255, 107, 53, 0.03) 100%)',
+            borderColor: 'rgba(255, 170, 0, 0.12)',
+            cursor: 'default'
+          }} onClick={(e) => e.stopPropagation()}>
+            <span style={{ fontSize: '1.5rem' }}>☀️</span>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <span style={{ fontSize: '0.65rem', fontWeight: 750, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                Sunrise / 日出
+              </span>
+              <span style={{ fontSize: '1.15rem', fontWeight: 850, color: 'var(--accent)', lineHeight: 1.2 }}>
+                {city.sunrise}
+              </span>
+              <span style={{ fontSize: '0.62rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                🌅 推荐: {city.sunriseAction}
+              </span>
+            </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-            <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
-              🌅 Sunset / 日落
-            </span>
-            <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--accent-secondary)' }}>{city.sunset}</span>
-            <span style={{ fontSize: '0.6rem', fontWeight: 600, color: 'var(--text-muted)', opacity: 0.7 }}>
-              Watch / 观看: {city.sunsetAction}
-            </span>
+
+          {/* Sunset Card */}
+          <div className="glass-panel" style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '12px',
+            padding: '12px 20px',
+            background: 'linear-gradient(135deg, rgba(244, 63, 94, 0.06) 0%, rgba(168, 85, 247, 0.03) 100%)',
+            borderColor: 'rgba(244, 63, 94, 0.12)',
+            cursor: 'default'
+          }} onClick={(e) => e.stopPropagation()}>
+            <span style={{ fontSize: '1.5rem' }}>🌅</span>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <span style={{ fontSize: '0.65rem', fontWeight: 750, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                Sunset / 日落
+              </span>
+              <span style={{ fontSize: '1.15rem', fontWeight: 850, color: 'var(--accent-secondary)', lineHeight: 1.2 }}>
+                {city.sunset}
+              </span>
+              <span style={{ fontSize: '0.62rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                🌆 推荐: {city.sunsetAction}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -150,6 +188,8 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
                 {getCityChinese(city.city)}
               </span>
             )}
+            {/* World Clock */}
+            <CityClock tzId={city.tz_id} isLarge={true} />
           </div>
 
           {/* CONDITION */}

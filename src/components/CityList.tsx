@@ -1,6 +1,9 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import { WeatherData, getUVDescription, getPressureDescription, getVisibilityDescription, getAQIDescription, getMoonPhaseChinese } from '@/lib/weather';
 import { getCityChinese } from '@/lib/cities';
+import { formatTimeParts } from '@/lib/timeUtils';
 
 interface CityListProps {
   data: WeatherData[];
@@ -18,7 +21,7 @@ const getTempColor = (temp_f: number): string => {
 
 /* Tiny SVG icons for weather details */
 const SunriseIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 2v4" /><path d="M12 18v4" />
     <path d="m4.93 4.93 2.83 2.83" /><path d="m16.24 16.24 2.83 2.83" />
     <path d="M2 12h4" /><path d="M18 12h4" />
@@ -27,12 +30,127 @@ const SunriseIcon = () => (
 );
 
 const SunsetIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 10V2" /><path d="m4.93 10.93 1.41 1.41" />
     <path d="M2 18h2" /><path d="M20 18h2" /><path d="m19.07 10.93-1.41 1.41" />
     <path d="M22 22H2" /><path d="M16 18a4 4 0 0 0-8 0" />
   </svg>
 );
+
+export function CityClock({ tzId, isLarge = false }: { tzId: string; isLarge?: boolean }) {
+  const [time, setTime] = useState(new Date());
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const framePadding = isLarge ? '12px 18px' : '8px 12px';
+  const timeFontSize = isLarge ? '2.1rem' : '1.35rem';
+  const periodFontSize = isLarge ? '0.9rem' : '0.72rem';
+  const tzFontSize = isLarge ? '0.68rem' : '0.58rem';
+  const dotSize = isLarge ? '7px' : '5px';
+
+  if (!mounted) {
+    return (
+      <div style={{
+        display: 'inline-flex',
+        flexDirection: 'column',
+        gap: '4px',
+        padding: framePadding,
+        borderRadius: '8px',
+        background: 'rgba(0, 0, 0, 0.25)',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.15)',
+        marginTop: '8px',
+        width: 'fit-content'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: tzFontSize, color: 'var(--text-muted)' }}>
+          <span style={{
+            width: dotSize,
+            height: dotSize,
+            borderRadius: '50%',
+            background: 'rgba(255, 255, 255, 0.1)'
+          }} />
+          <span>Loading clock...</span>
+        </div>
+      </div>
+    );
+  }
+
+  const { timeStr, period, tz } = formatTimeParts(time, tzId);
+
+  return (
+    <div style={{
+      display: 'inline-flex',
+      flexDirection: 'column',
+      gap: '4px',
+      padding: framePadding,
+      borderRadius: '8px',
+      background: 'rgba(0, 0, 0, 0.25)',
+      border: '1px solid rgba(255, 255, 255, 0.08)',
+      boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.15)',
+      marginTop: '8px',
+      width: 'fit-content'
+    }}>
+      {/* Time digits + indicator */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'baseline',
+        gap: '6px',
+      }}>
+        {/* Pulsing live dot */}
+        <span style={{
+          width: dotSize,
+          height: dotSize,
+          borderRadius: '50%',
+          background: '#00ffcc', // cyan neon glow
+          boxShadow: '0 0 8px #00ffcc, 0 0 16px #00ffcc',
+          alignSelf: 'center',
+          animation: 'pulse-dot 2s infinite'
+        }} />
+        <span style={{
+          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace',
+          fontSize: timeFontSize,
+          fontWeight: 800,
+          color: '#00ffcc', // neon green/cyan
+          textShadow: '0 0 6px rgba(0, 255, 204, 0.3)',
+          letterSpacing: '-0.02em',
+          fontVariantNumeric: 'tabular-nums',
+          lineHeight: 1
+        }}>
+          {timeStr}
+        </span>
+        <span style={{
+          fontFamily: 'ui-monospace, SFMono-Regular, monospace',
+          fontSize: periodFontSize,
+          fontWeight: 700,
+          color: 'rgba(0, 255, 204, 0.7)',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em'
+        }}>
+          {period}
+        </span>
+      </div>
+      
+      {/* Timezone name */}
+      {tz && (
+        <span style={{
+          fontSize: tzFontSize,
+          fontWeight: 700,
+          color: 'var(--text-muted)',
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+          opacity: 0.85
+        }}>
+          {tz}
+        </span>
+      )}
+    </div>
+  );
+}
 
 export default function CityList({ data, type }: CityListProps) {
   if (data.length === 0) {
@@ -69,27 +187,58 @@ export default function CityList({ data, type }: CityListProps) {
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '0 2px',
+              alignItems: 'stretch',
+              gap: '12px',
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {/* Sunrise Box */}
+              <div style={{
+                flex: 1,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 10px',
+                borderRadius: '8px',
+                background: 'linear-gradient(135deg, rgba(255, 170, 0, 0.06) 0%, rgba(255, 107, 53, 0.02) 100%)',
+                border: '1px solid rgba(255, 170, 0, 0.1)',
+                boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.02)',
+              }}>
                 <SunriseIcon />
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: '0.65rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.02em' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
+                  <span style={{ fontSize: '0.55rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Sunrise / 日出
+                  </span>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '0.01em', lineHeight: 1.1 }}>
                     {city.sunrise}
                   </span>
-                  <span style={{ fontSize: '0.58rem', fontWeight: 600, color: 'var(--accent)', opacity: 0.8 }}>
-                    Watch / 观看: {city.sunriseAction}
+                  <span style={{ fontSize: '0.55rem', fontWeight: 650, color: 'var(--accent)', opacity: 0.9 }}>
+                    🌅 推荐: {city.sunriseAction}
                   </span>
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', textAlign: 'right' }}>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: '0.65rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.02em' }}>
+
+              {/* Sunset Box */}
+              <div style={{
+                flex: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                gap: '8px',
+                padding: '8px 10px',
+                borderRadius: '8px',
+                background: 'linear-gradient(135deg, rgba(244, 63, 94, 0.06) 0%, rgba(168, 85, 247, 0.02) 100%)',
+                border: '1px solid rgba(244, 63, 94, 0.1)',
+                boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.02)',
+                textAlign: 'right',
+              }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
+                  <span style={{ fontSize: '0.55rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Sunset / 日落
+                  </span>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '0.01em', lineHeight: 1.1 }}>
                     {city.sunset}
                   </span>
-                  <span style={{ fontSize: '0.58rem', fontWeight: 600, color: 'var(--accent-secondary)', opacity: 0.8 }}>
-                    Watch / 观看: {city.sunsetAction}
+                  <span style={{ fontSize: '0.55rem', fontWeight: 650, color: 'var(--accent-secondary)', opacity: 0.9 }}>
+                    🌆 推荐: {city.sunsetAction}
                   </span>
                 </div>
                 <SunsetIcon />
@@ -126,6 +275,8 @@ export default function CityList({ data, type }: CityListProps) {
                     </span>
                   )}
                 </h3>
+                {/* Local clock */}
+                <CityClock tzId={city.tz_id} />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                 <span style={{

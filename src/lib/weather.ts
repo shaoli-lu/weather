@@ -17,6 +17,7 @@ export interface WeatherData {
   vis_km: number;
   aqi: number;
   sun_hours: string;
+  tz_id: string;
 }
 
 
@@ -155,6 +156,7 @@ export const fetchWeather = async (city: string): Promise<WeatherData> => {
       vis_km: data.current.vis_km,
       aqi: data.current.air_quality?.["us-epa-index"] || 0,
       sun_hours: calculateSunHours(sunrise, sunset),
+      tz_id: data.location.tz_id || 'UTC',
     };
   } catch (error) {
     console.error(`Error fetching weather for ${city}:`, error);
