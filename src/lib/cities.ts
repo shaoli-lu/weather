@@ -143,6 +143,10 @@ export const CITY_METADATA: Record<string, CityMetadata> = {
     languages: "Portuguese / 葡萄牙语",
     characteristics: "Gastronomy, financial hub, massive skyscrapers / 美食、金融中心、摩天大楼群"
   },
+  "Hamilton Bermuda": {
+    languages: "English / 英语",
+    characteristics: "Historic harbor town, pastel houses, coral gardens, pink sand beaches / 历史港口小镇、彩色房屋、珊瑚花园、粉红沙滩"
+  },
   "Brasilia Brazil": {
     languages: "Portuguese / 葡萄牙语",
     characteristics: "Modernist architecture, planned city layout, capital city / 现代主义建筑、规划城市布局、首都"

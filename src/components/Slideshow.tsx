@@ -57,7 +57,7 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
         position: 'relative', width: '100%',
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
-        minHeight: '480px', cursor: 'pointer'
+        minHeight: '420px', cursor: 'pointer'
       }}
       onClick={() => setIsPaused(!isPaused)}
     >
@@ -76,7 +76,7 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
 
       {/* SLIDE CONTENT */}
       <div style={{
-        width: '100%', maxWidth: '900px', padding: '0 16px',
+        width: '100%', maxWidth: '760px', padding: '0 14px',
         display: 'flex', flexDirection: 'column', alignItems: 'center',
         transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
         opacity: fade ? 1 : 0,
@@ -146,9 +146,9 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
 
         {/* MAIN GLASS PANEL */}
         <div className="glass-panel" style={{
-          width: '100%', padding: '48px 40px',
+          width: '100%', padding: '28px 24px',
           display: 'flex', flexDirection: 'column',
-          alignItems: 'center', gap: '32px',
+          alignItems: 'center', gap: '20px',
           position: 'relative', overflow: 'hidden'
         }}>
           {/* Glow blob inside card */}
@@ -185,12 +185,12 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
               {city.city}
             </h2>
             {getCityChinese(city.city) && (
-              <span style={{ fontSize: '1.2rem', color: 'var(--text-muted)', fontWeight: 500, opacity: 0.6 }}>
+              <span style={{ fontSize: '1rem', color: 'var(--text-muted)', fontWeight: 500, opacity: 0.6 }}>
                 {getCityChinese(city.city)}
               </span>
             )}
             {/* World Clock */}
-            <CityClock tzId={city.tz_id} isLarge={true} />
+            <CityClock tzId={city.tz_id} isLarge={false} />
           </div>
 
           {/* CONDITION */}
@@ -210,14 +210,14 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
           </div>
 
           {/* TEMPERATURE */}
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '12px', zIndex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '12px', zIndex: 1, flexWrap: 'wrap' }}>
             <span style={{
-              fontSize: 'clamp(4rem, 15vw, 8rem)',
+              fontSize: 'clamp(2.75rem, 8vw, 4.5rem)',
               fontWeight: 900,
               color: tempColor,
               letterSpacing: '-0.05em',
               lineHeight: 1,
-              textShadow: `0 0 60px ${tempColor}30`
+              textShadow: `0 0 40px ${tempColor}30`
             }}>
               {Math.round(city.temp_f)}°
             </span>
@@ -277,12 +277,12 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
           <div className="glass-divider" />
 
           {/* WEATHER DETAILS GRID */}
-          <div style={{
+          <div className="slideshow-details-grid" style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '24px 32px',
-            width: '100%', maxWidth: '640px',
-            padding: '24px 0',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+            gap: '18px',
+            width: '100%', maxWidth: '620px',
+            padding: '20px 0',
             zIndex: 1
           }}>
             {[
