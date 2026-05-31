@@ -106,28 +106,113 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<'slideshow' | 'cities' | 'hot' | 'cool' | 'sightings' | 'submit' | 'moderate'>('sightings');
   const [searchQuery, setSearchQuery] = useState('');
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [loadAll, setLoadAll] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  const CACHE_KEY = 'sunrise_city_weather_cache_v1';
+  const INITIAL_CITY_BATCH_SIZE = 6;
+  const BATCH_FETCH_SIZE = 8;
+
+  const loadCache = (): WeatherData[] => {
+    if (typeof window === 'undefined') return [];
+    const raw = window.localStorage.getItem(CACHE_KEY);
+    if (!raw) return [];
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      console.warn('Clearing invalid weather cache', error);
+      window.localStorage.removeItem(CACHE_KEY);
+      return [];
+    }
+  };
+
+  const saveCache = (items: WeatherData[]) => {
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(CACHE_KEY, JSON.stringify(items));
+    } catch (error) {
+      console.warn('Unable to persist weather cache', error);
+    }
+  };
+
+  const loadCities = async (cities: string[], currentData: WeatherData[] = data) => {
+    if (cities.length === 0) return;
+    setLoadingMore(true);
+
+    const existingCache = new Map<string, WeatherData>(currentData.map((item) => [item.queryCity, item]));
+    const missingCities = cities.filter((city) => !existingCache.has(city));
+    if (missingCities.length === 0) {
+      setLoadingMore(false);
+      return;
+    }
+
+    const newItems: WeatherData[] = [];
+    for (let i = 0; i < missingCities.length; i += BATCH_FETCH_SIZE) {
+      const batch = missingCities.slice(i, i + BATCH_FETCH_SIZE);
+      const settled = await Promise.allSettled(batch.map(async (city) => {
+        try {
+          const result = await fetchWeather(city);
+          existingCache.set(city, result);
+          return result;
+        } catch (error) {
+          console.warn(`Failed to fetch weather for ${city}:`, error);
+          return existingCache.get(city) || null;
+        }
+      }));
+
+      settled.forEach((item) => {
+        if (item.status === 'fulfilled' && item.value) {
+          newItems.push(item.value);
+        }
+      });
+    }
+
+    if (newItems.length > 0) {
+      setData((prev) => {
+        const merged = new Map<string, WeatherData>(prev.map((item) => [item.queryCity, item]));
+        newItems.forEach((item) => merged.set(item.queryCity, item));
+        const combined = Array.from(merged.values());
+        saveCache(combined);
+        return combined;
+      });
+    }
+
+    setLoadingMore(false);
+  };
 
   useEffect(() => {
     setMounted(true);
-    const loadAllData = async () => {
+
+    const initializeCities = async () => {
       setLoading(true);
       try {
-        const results = await Promise.all(ALL_CITIES.map(city => fetchWeather(city)));
-        setData(results);
+        const cached = loadCache();
+        if (cached.length > 0) {
+          setData(cached);
+        }
+
+        const focusedInitial = FOCUSED_CITIES.slice(0, INITIAL_CITY_BATCH_SIZE);
+        const cachedMap = new Map<string, WeatherData>(cached.map((item) => [item.queryCity, item]));
+        const toFetch = focusedInitial.filter((city) => !cachedMap.has(city));
+        await loadCities(toFetch, cached);
       } catch (error) {
-        console.error("Critical error loading weather data:", error);
+        console.error('Critical error loading weather data:', error);
       } finally {
         setLoading(false);
       }
     };
-    loadAllData();
+
+    initializeCities();
   }, []);
 
   const filteredData = data.filter(item =>
     item.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.country.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const visibleCount = loadAll ? ALL_CITIES.length : INITIAL_CITY_BATCH_SIZE;
 
   const getSortedData = (tab: typeof activeTab) => {
     switch (tab) {
@@ -160,6 +245,19 @@ export default function Home() {
     { id: 'cool', label: '❄️ Cool 凉爽', emoji: '❄️' },
     { id: 'moderate', label: '🛡️ Moderate 审核', emoji: '🛡️' }
   ];
+
+  const visibleData = getSortedData(activeTab).slice(0, visibleCount);
+
+  const handleToggleLoadAll = async () => {
+    if (loadAll) {
+      setLoadAll(false);
+      return;
+    }
+
+    setLoadAll(true);
+    const missing = ALL_CITIES.filter((city) => !data.some((item) => item.queryCity === city));
+    await loadCities(missing);
+  };
 
   return (
     <>
@@ -335,10 +433,35 @@ export default function Home() {
           ) : (
             <div style={{ width: '100%', flex: 1 }}>
               {activeTab === 'slideshow' && (
-                <Slideshow data={getSortedData('cities' as any)} />
+                <Slideshow data={visibleData} />
               )}
               {(activeTab === 'cities' || activeTab === 'hot' || activeTab === 'cool') && (
-                <CityList data={getSortedData(activeTab as any)} type={activeTab as any} />
+                <>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '12px',
+                    marginBottom: '16px'
+                  }}>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 600 }}>
+                      {loadingMore
+                        ? 'Loading remaining city cards...'
+                        : loadAll
+                          ? `Showing ${visibleData.length} cities.`
+                          : `Showing first ${visibleCount} cities. Load all to expand.`}
+                    </div>
+                    <button
+                      onClick={handleToggleLoadAll}
+                      className="glass-button"
+                      style={{ minWidth: '160px' }}
+                    >
+                      {loadAll ? 'Show first 6' : 'Load All Cities'}
+                    </button>
+                  </div>
+                  <CityList data={visibleData} type={activeTab as any} />
+                </>
               )}
               {activeTab === 'sightings' && (
                 <SightingsTab />
