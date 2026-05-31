@@ -439,13 +439,14 @@ export default function Home() {
                 <>
                   <div style={{
                     display: 'flex',
-                    justifyContent: 'space-between',
+                    justifyContent: 'center',
                     alignItems: 'center',
                     flexWrap: 'wrap',
                     gap: '12px',
-                    marginBottom: '16px'
+                    marginBottom: '16px',
+                    textAlign: 'center'
                   }}>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 600 }}>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 600, minWidth: '240px' }}>
                       {loadingMore
                         ? 'Loading remaining city cards...'
                         : loadAll
@@ -455,7 +456,16 @@ export default function Home() {
                     <button
                       onClick={handleToggleLoadAll}
                       className="glass-button"
-                      style={{ minWidth: '160px' }}
+                      style={{
+                        minWidth: '180px',
+                        padding: '12px 20px',
+                        background: 'rgba(88, 137, 166, 0.92)',
+                        color: '#f8fbff',
+                        borderColor: 'rgba(255,255,255,0.14)',
+                        boxShadow: '0 14px 32px rgba(0, 0, 0, 0.14)',
+                        fontWeight: 700,
+                        letterSpacing: '0.03em'
+                      }}
                     >
                       {loadAll ? 'Show first 6' : 'Load All Cities'}
                     </button>
