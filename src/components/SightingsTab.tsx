@@ -107,7 +107,7 @@ function SightingCard({ s, onVote }: { s: Sighting; onVote: (id: number, dir: 'u
             alt={s.caption || 'Sunrise/Sunset'}
             loading="lazy"
             decoding="async"
-            style={{ width: '100%', maxHeight: '360px', objectFit: 'cover', display: 'block' }}
+            style={{ width: '100%', maxHeight: '480px', objectFit: 'contain', objectPosition: 'center', display: 'block', background: 'rgba(0,0,0,0.6)' }}
             onError={e => { (e.target as HTMLImageElement).src = 'https://placehold.co/800x400/0a0a1a/00d4ff?text=Image+unavailable'; }}
           />
         ) : embedUrl ? (
