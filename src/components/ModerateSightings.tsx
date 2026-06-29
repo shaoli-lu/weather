@@ -1,5 +1,6 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+
 
 type Sighting = {
   id: number;
@@ -59,9 +60,12 @@ export default function ModerateSightings() {
           ? prev.map(s => s.id === id ? { ...s, approved: true } : s)
           : prev.filter(s => s.id !== id)
         );
+      } else {
+        const data = await res.json().catch(() => ({}));
+        alert(data.error || 'Action failed');
       }
     } catch (err) {
-      alert('Action failed');
+      alert('Action failed: ' + (err instanceof Error ? err.message : String(err)));
     }
   };
 

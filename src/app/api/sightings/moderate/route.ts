@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
 // GET: fetch pending sightings for moderation
@@ -26,8 +26,18 @@ export async function PATCH(req: NextRequest) {
 
   if (!approved) {
     // Delete rejected sightings
-    const { error } = await supabase.from('sightings').delete().eq('id', id);
+    const { data, error } = await supabase
+      .from('sightings')
+      .delete()
+      .eq('id', id)
+      .select();
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (!data || data.length === 0) {
+      return NextResponse.json(
+        { error: 'No row was deleted from Supabase. Please ensure Row Level Security (RLS) is disabled or SUPABASE_SERVICE_ROLE_KEY is configured in env variables.' },
+        { status: 403 }
+      );
+    }
     return NextResponse.json({ deleted: true });
   }
 
@@ -41,3 +51,4 @@ export async function PATCH(req: NextRequest) {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json(data);
 }
+
