@@ -32,6 +32,42 @@ export async function GET(request: Request) {
     }
 
     const data = await response.json();
+
+    // Fetch more accurate air quality data from Open-Meteo using coordinates
+    const lat = data.location?.lat;
+    const lon = data.location?.lon;
+    if (typeof lat === 'number' && typeof lon === 'number') {
+      try {
+        const aqResponse = await fetch(
+          `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=us_aqi`,
+          { signal: AbortSignal.timeout(3000) }
+        );
+        if (aqResponse.ok) {
+          const aqData = await aqResponse.json();
+          const usAqi = aqData.current?.us_aqi;
+          if (typeof usAqi === 'number') {
+            let epaIndex = 1;
+            if (usAqi <= 50) epaIndex = 1;
+            else if (usAqi <= 100) epaIndex = 2;
+            else if (usAqi <= 150) epaIndex = 3;
+            else if (usAqi <= 200) epaIndex = 4;
+            else if (usAqi <= 300) epaIndex = 5;
+            else epaIndex = 6;
+
+            if (!data.current) {
+              data.current = {};
+            }
+            if (!data.current.air_quality) {
+              data.current.air_quality = {};
+            }
+            data.current.air_quality['us-epa-index'] = epaIndex;
+          }
+        }
+      } catch (aqError) {
+        console.error(`Error fetching air quality from Open-Meteo for ${city}:`, aqError);
+      }
+    }
+
     return NextResponse.json(data);
   } catch (error) {
     console.error(`Internal error fetching weather for ${city}:`, error);
