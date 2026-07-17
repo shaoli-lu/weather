@@ -62,6 +62,7 @@ export async function GET(request: Request) {
             if (!data.current.air_quality) {
               data.current.air_quality = {};
             }
+            data.current.air_quality['us-aqi'] = usAqi;
             data.current.air_quality['us-epa-index'] = epaIndex;
           }
         }

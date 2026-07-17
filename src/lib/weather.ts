@@ -90,12 +90,12 @@ export const getVisibilityDescription = (km: number): string => {
 };
 
 export const getAQIDescription = (aqi: number): string => {
-  if (aqi <= 1) return "Good / 优";
-  if (aqi === 2) return "Moderate / 良";
-  if (aqi === 3) return "Sensitive Groups / 敏感人群不适";
-  if (aqi === 4) return "Unhealthy / 不健康";
-  if (aqi === 5) return "Very Unhealthy / 非常不健康";
-  if (aqi >= 6) return "Hazardous / 危险";
+  if (aqi <= 50) return "Good / 优";
+  if (aqi <= 100) return "Moderate / 良";
+  if (aqi <= 150) return "Sensitive Groups / 敏感人群不适";
+  if (aqi <= 200) return "Unhealthy / 不健康";
+  if (aqi <= 300) return "Very Unhealthy / 非常不健康";
+  if (aqi > 300) return "Hazardous / 危险";
   return "Unknown / 未知";
 };
 
@@ -169,7 +169,7 @@ export const fetchWeather = async (city: string): Promise<WeatherData> => {
       humidity: data.current.humidity,
       pressure_mb: data.current.pressure_mb,
       vis_km: data.current.vis_km,
-      aqi: data.current.air_quality?.["us-epa-index"] || 0,
+      aqi: data.current.air_quality?.["us-aqi"] ?? data.current.air_quality?.["us-epa-index"] ?? 0,
       sun_hours: calculateSunHours(sunrise, sunset),
       tz_id: data.location.tz_id || 'UTC',
     };

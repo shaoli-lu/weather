@@ -355,10 +355,10 @@ export default function CityList({ data, type }: CityListProps) {
                 { label: 'Pressure / 气压', value: `${city.pressure_mb} mb`, desc: getPressureDescription(city.pressure_mb) },
                 { label: 'Visibility / 能见度', value: `${city.vis_km} km`, desc: getVisibilityDescription(city.vis_km) },
                 { 
-                  label: 'EPA Index / 空气质量', 
+                  label: 'AQI / 空气质量', 
                   value: `${city.aqi}`, 
                   desc: getAQIDescription(city.aqi),
-                  color: city.aqi >= 3 ? '#ff4d4d' : undefined 
+                  color: city.aqi > 300 ? '#ff4d4d' : city.aqi >= 100 ? '#ff8a00' : undefined 
                 },
                 { label: 'Daylight / 日照', value: city.sun_hours, desc: null },
               ].map((item, i) => (
