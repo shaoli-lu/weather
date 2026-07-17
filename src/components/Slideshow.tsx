@@ -290,7 +290,12 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
               { label: 'Humidity / 湿度', value: `${city.humidity}%`, desc: null },
               { label: 'Pressure / 气压', value: `${city.pressure_mb} mb`, desc: getPressureDescription(city.pressure_mb) },
               { label: 'Visibility / 能见度', value: `${city.vis_km} km`, desc: getVisibilityDescription(city.vis_km) },
-              { label: 'AQI (EPA) / 空气质量', value: `${city.aqi}`, desc: getAQIDescription(city.aqi) },
+              { 
+                label: 'AQI (EPA) / 空气质量', 
+                value: `${city.aqi}`, 
+                desc: getAQIDescription(city.aqi),
+                color: city.aqi >= 3 ? '#ff4d4d' : undefined
+              },
               { label: 'Daylight / 日照', value: city.sun_hours, desc: null },
             ].map((item, i) => (
               <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
@@ -302,14 +307,15 @@ export default function Slideshow({ data }: { data: WeatherData[] }) {
                 }}>{item.label}</span>
                 <span style={{
                   fontSize: '1.1rem', fontWeight: 700,
-                  color: 'var(--text-primary)'
+                  color: item.color || 'var(--text-primary)'
                 }}>
                   {item.value}
                 </span>
                 {item.desc && (
                   <span style={{
-                    fontSize: '0.65rem', fontWeight: 500,
-                    color: 'var(--accent)', opacity: 0.7
+                    fontSize: '0.65rem', fontWeight: item.color ? 700 : 500,
+                    color: item.color || 'var(--accent)', 
+                    opacity: item.color ? 1 : 0.7
                   }}>{item.desc}</span>
                 )}
               </div>

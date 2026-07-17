@@ -354,14 +354,26 @@ export default function CityList({ data, type }: CityListProps) {
                 { label: 'Humidity / 湿度', value: `${city.humidity}%`, desc: null },
                 { label: 'Pressure / 气压', value: `${city.pressure_mb} mb`, desc: getPressureDescription(city.pressure_mb) },
                 { label: 'Visibility / 能见度', value: `${city.vis_km} km`, desc: getVisibilityDescription(city.vis_km) },
-                { label: 'EPA Index / 空气质量', value: `${city.aqi}`, desc: getAQIDescription(city.aqi) },
+                { 
+                  label: 'EPA Index / 空气质量', 
+                  value: `${city.aqi}`, 
+                  desc: getAQIDescription(city.aqi),
+                  color: city.aqi >= 3 ? '#ff4d4d' : undefined 
+                },
                 { label: 'Daylight / 日照', value: city.sun_hours, desc: null },
               ].map((item, i) => (
                 <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                   <span className="detail-label">{item.label}</span>
-                  <span className="detail-value">
+                  <span className="detail-value" style={item.color ? { color: item.color } : undefined}>
                     {item.value}
-                    {item.desc && <span className="descriptor"> · {item.desc}</span>}
+                    {item.desc && (
+                      <span 
+                        className="descriptor" 
+                        style={item.color ? { color: item.color, opacity: 1, fontWeight: 700 } : undefined}
+                      >
+                        · {item.desc}
+                      </span>
+                    )}
                   </span>
                 </div>
               ))}
