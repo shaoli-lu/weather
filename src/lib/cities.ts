@@ -1,12 +1,13 @@
 export const FOCUSED_CITIES = [
   "Milwaukee WI",
+  "Chicago IL",
+  "Atlanta GA",
+   "St.Paul MN",
   "Dublin Ireland",
   "São Paulo Brazil",
   "Hamilton Bermuda",
   "Brasilia Brazil",
-  "Chicago IL",
-  "Atlanta GA",
-  "St.Paul MN",
+
   "San Jose CA",
   "Davis CA",
   "Miami FL",
