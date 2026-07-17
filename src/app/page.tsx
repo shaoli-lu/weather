@@ -111,11 +111,28 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
 
   const CACHE_KEY = 'sunrise_city_weather_cache_v1';
+  const CACHE_TIME_KEY = 'sunrise_city_weather_cache_time_v1';
   const INITIAL_CITY_BATCH_SIZE = 6;
   const BATCH_FETCH_SIZE = 8;
 
   const loadCache = (): WeatherData[] => {
     if (typeof window === 'undefined') return [];
+    
+    const rawTime = window.localStorage.getItem(CACHE_TIME_KEY);
+    if (rawTime) {
+      const time = parseInt(rawTime, 10);
+      if (isNaN(time) || Date.now() - time > 15 * 60 * 1000) {
+        // Cache expired, clean it up
+        window.localStorage.removeItem(CACHE_KEY);
+        window.localStorage.removeItem(CACHE_TIME_KEY);
+        return [];
+      }
+    } else {
+      // No timestamp (old cache style), clean it up
+      window.localStorage.removeItem(CACHE_KEY);
+      return [];
+    }
+
     const raw = window.localStorage.getItem(CACHE_KEY);
     if (!raw) return [];
     try {
@@ -124,6 +141,7 @@ export default function Home() {
     } catch (error) {
       console.warn('Clearing invalid weather cache', error);
       window.localStorage.removeItem(CACHE_KEY);
+      window.localStorage.removeItem(CACHE_TIME_KEY);
       return [];
     }
   };
@@ -132,6 +150,7 @@ export default function Home() {
     if (typeof window === 'undefined') return;
     try {
       window.localStorage.setItem(CACHE_KEY, JSON.stringify(items));
+      window.localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
     } catch (error) {
       console.warn('Unable to persist weather cache', error);
     }

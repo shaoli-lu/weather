@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const city = searchParams.get('city');
@@ -19,7 +21,7 @@ export async function GET(request: Request) {
     const response = await fetch(
       `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${encodeURIComponent(city)}&days=1&aqi=yes&alerts=no`,
       {
-        next: { revalidate: 60 }, // Optional: cache for 60 seconds
+        cache: 'no-store',
       }
     );
 
@@ -68,7 +70,11 @@ export async function GET(request: Request) {
       }
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      },
+    });
   } catch (error) {
     console.error(`Internal error fetching weather for ${city}:`, error);
     return NextResponse.json({ error: 'Failed to fetch from weather service' }, { status: 500 });
