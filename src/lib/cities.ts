@@ -3,10 +3,12 @@ export const FOCUSED_CITIES = [
   "Chicago IL",
   "Atlanta GA",
    "St.Paul MN",
+     "Jilin China",
+  "Shenyang China",
+  "Changchun China",
+  "Los Angeles CA",
   "Dublin Ireland",
-  "São Paulo Brazil",
-  "Hamilton Bermuda",
-  "Brasilia Brazil",
+
 
   "San Jose CA",
   "Davis CA",
@@ -18,20 +20,21 @@ export const FOCUSED_CITIES = [
 
 export const OTHER_CITIES = [
   "New York NY",
-  "Los Angeles CA",
+  
   "London UK",
   "Tokyo Japan",
   "Paris France",
   "Sydney Australia",
+    "São Paulo Brazil",
+  "Hamilton Bermuda",
+  "Brasilia Brazil",
   "Dubai",
   "Singapore",
   "Mumbai India",
   "Toronto Canada",
   "Berlin Germany",
   "Rome Italy",
-  "Jilin China",
-  "Shenyang China",
-  "Changchun China",
+
   "Beijing China",
   "Shanghai China",
   "Guangzhou China",
